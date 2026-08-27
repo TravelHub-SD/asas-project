@@ -1,5 +1,11 @@
 import type { MetadataRoute } from "next";
-import { CITIES, SUBJECTS, publishedDistricts } from "@/data/catalog";
+import {
+  CITIES,
+  PRIORITY_SUBJECT_SLUGS,
+  SUBJECTS,
+  allDistricts,
+  publishedRegions,
+} from "@/data/catalog";
 import { SITE_URL } from "@/lib/config";
 
 /** يتولّد كاملًا من الكتالوج — أي مادة أو حي جديد يظهر هنا تلقائيًا. */
@@ -20,13 +26,33 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     });
 
-    for (const district of publishedDistricts(city)) {
+    for (const region of publishedRegions(city)) {
+      entries.push({
+        url: url(`/${city.slug}/${region.slug}`),
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.8,
+      });
+    }
+
+    for (const { district } of allDistricts(city)) {
       entries.push({
         url: url(`/${city.slug}/${district.slug}`),
         lastModified: now,
         changeFrequency: "monthly",
-        priority: 0.7,
+        // الأحياء المميّزة أولوية أعلى
+        priority: district.featured ? 0.7 : 0.6,
       });
+
+      if (!district.featured) continue;
+      for (const subject of PRIORITY_SUBJECT_SLUGS) {
+        entries.push({
+          url: url(`/${city.slug}/${district.slug}/${subject}`),
+          lastModified: now,
+          changeFrequency: "monthly",
+          priority: 0.7,
+        });
+      }
     }
 
     for (const subject of SUBJECTS) {

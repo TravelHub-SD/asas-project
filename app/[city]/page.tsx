@@ -16,7 +16,8 @@ import {
   REGULAR_SUBJECTS,
   SUBJECTS,
   getCity,
-  publishedDistricts,
+  publishedRegions,
+  regionDistricts,
 } from "@/data/catalog";
 import { waMessage } from "@/lib/content";
 import {
@@ -41,8 +42,8 @@ export function generateMetadata({ params }: Params): Metadata {
   const city = getCity(params.city);
   if (!city) return {};
   return pageMetadata({
-    title: `معلمون ومعلمات خصوصيون في ${city.nameAr}`,
-    description: `معلمون ومعلمات خبرة في ${city.nameAr} لجميع المواد والمراحل — تأسيس ومتابعة للمناهج السعودية والبريطانية والأمريكية، وبرامج القدرات والتحصيلي والتخاطب وصعوبات التعلم. حصص منزلية أو أونلاين.`,
+    title: `مدرسة خصوصية في ${city.nameAr}`,
+    description: `معلمون ومعلمات متميّزون في ${city.nameAr} لجميع المواد والمراحل — تأسيس ومتابعة للمناهج السعودية والبريطانية والأمريكية، وبرامج القدرات والتحصيلي والتخاطب وصعوبات التعلم. حصص منزلية أو أونلاين.`,
     path: `/${city.slug}`,
   });
 }
@@ -51,7 +52,7 @@ export default function CityPage({ params }: Params) {
   const city = getCity(params.city);
   if (!city) notFound();
 
-  const districts = publishedDistricts(city);
+  const regions = publishedRegions(city);
   const message = waMessage(undefined, city.nameAr);
   const otherCities = CITIES.filter((c) => c.slug !== city.slug);
 
@@ -63,7 +64,7 @@ export default function CityPage({ params }: Params) {
   const faqs = [
     {
       q: `كيف أختار المعلمة المناسبة في ${city.nameAr}؟`,
-      a: `أخبرنا عبر واتساب بالصف الدراسي والمادة والمنهج والحي والوقت المفضّل، فنرشّح لك معلمة من الشبكة تطابق هذه التفاصيل. الحصة الأولى تعارف وتقييم مستوى، وإن لم تكن مناسبة نرشّح غيرها.`,
+      a: `أخبرنا عبر واتساب بالصف الدراسي والمادة والمنهج والحي والوقت المفضّل، فنرشّح لك معلمة متميّزة تطابق هذه التفاصيل. الحصة الأولى تعارف وتقييم مستوى، وإن لم تكن مناسبة نرشّح غيرها.`,
     },
     {
       q: `هل الحصص في ${city.nameAr} منزلية أم أونلاين؟`,
@@ -97,7 +98,7 @@ export default function CityPage({ params }: Params) {
 
       <section className="mx-auto max-w-content px-4 py-10">
         <h1 className="max-w-3xl text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl sm:leading-tight">
-          معلمون ومعلمات خصوصيون في {city.nameAr}
+          مدرسة خصوصية في {city.nameAr}
         </h1>
         <p className="mt-5 max-w-3xl text-lg leading-9 text-slate-600">{city.intro}</p>
         <p className="mt-4 max-w-3xl leading-9 text-slate-600">{city.localNote}</p>
@@ -135,23 +136,28 @@ export default function CityPage({ params }: Params) {
           }))}
         />
 
-        {/* الأحياء */}
-        {districts.length > 0 && (
+        {/* المناطق والأحياء */}
+        {regions.length > 0 && (
           <section>
-            <SectionTitle>الأحياء التي نغطّيها في {city.nameAr}</SectionTitle>
-            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {districts.map((d) => (
+            <SectionTitle>المناطق التي نغطّيها في {city.nameAr}</SectionTitle>
+            <div className="mt-6 grid gap-4 lg:grid-cols-3">
+              {regions.map((r) => (
                 <Link
-                  key={d.slug}
-                  href={`/${city.slug}/${d.slug}`}
+                  key={r.slug}
+                  href={`/${city.slug}/${r.slug}`}
                   className="group rounded-2xl border border-slate-200 bg-white p-6 transition hover:border-brand-300"
                 >
                   <h3 className="text-lg font-bold text-slate-900 group-hover:text-brand-800">
-                    {d.nameArFull}
+                    {r.nameAr}
                   </h3>
-                  <p className="mt-3 line-clamp-4 leading-8 text-slate-600">{d.intro}</p>
-                  <p className="mt-3 text-sm text-slate-500">
-                    ونغطّي قريبًا منه: {d.nearby.join(" · ")}
+                  <p className="mt-3 leading-8 text-slate-600">{r.intro}</p>
+                  <p className="mt-4 text-sm text-brand-700">
+                    {regionDistricts(r)
+                      .filter((d) => d.featured)
+                      .slice(0, 4)
+                      .map((d) => d.nameAr)
+                      .join(" · ")}
+                    {r.districts.length > 4 ? ` وأكثر (${r.districts.length} حيًا)` : ""}
                   </p>
                 </Link>
               ))}

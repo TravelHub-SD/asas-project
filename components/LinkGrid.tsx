@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { LinkItem } from "@/lib/content";
 
-/** شبكة روابط داخلية — العمود الفقري للربط الداخلي بين الصفحات. */
+/** روابط داخلية — العمود الفقري للربط بين الصفحات. */
 export default function LinkGrid({
   title,
   description,

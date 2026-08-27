@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { BRAND, PHONE_DISPLAY, telLink, waLink } from "@/lib/config";
-import { CITIES, SUBJECTS, publishedDistricts } from "@/data/catalog";
+import { CITIES, SUBJECTS, allDistricts, publishedRegions } from "@/data/catalog";
+import BrandMark from "./BrandMark";
 
 export default function Footer() {
   return (
@@ -9,9 +10,7 @@ export default function Footer() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="grid h-9 w-9 place-items-center rounded-lg bg-brand-700 text-lg font-bold text-white">
-                أ
-              </span>
+              <BrandMark className="h-9 w-9" />
               <span className="text-lg font-bold text-brand-800">{BRAND.nameAr}</span>
             </div>
             <p className="mt-4 text-sm leading-7 text-slate-600">{BRAND.tagline}</p>
@@ -36,10 +35,10 @@ export default function Footer() {
                 </li>
               ))}
               {CITIES.flatMap((city) =>
-                publishedDistricts(city).map((d) => (
-                  <li key={`${city.slug}-${d.slug}`}>
-                    <Link href={`/${city.slug}/${d.slug}`} className="text-slate-600 hover:text-brand-700 hover:underline">
-                      {d.nameArFull}
+                publishedRegions(city).map((r) => (
+                  <li key={`${city.slug}-${r.slug}`}>
+                    <Link href={`/${city.slug}/${r.slug}`} className="text-slate-600 hover:text-brand-700 hover:underline">
+                      {r.nameAr}
                     </Link>
                   </li>
                 ))
@@ -47,9 +46,28 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="lg:col-span-2">
+          <div>
+            <h3 className="text-sm font-bold text-slate-900">أحياء جدة</h3>
+            <ul className="mt-4 space-y-2 text-sm">
+              {allDistricts(CITIES[0])
+                .filter((d) => d.district.featured)
+                .slice(0, 10)
+                .map(({ district }) => (
+                  <li key={district.slug}>
+                    <Link
+                      href={`/jeddah/${district.slug}`}
+                      className="text-slate-600 hover:text-brand-700 hover:underline"
+                    >
+                      {district.nameArFull}
+                    </Link>
+                  </li>
+                ))}
+            </ul>
+          </div>
+
+          <div>
             <h3 className="text-sm font-bold text-slate-900">المواد والبرامج</h3>
-            <ul className="mt-4 grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
+            <ul className="mt-4 space-y-2 text-sm">
               {SUBJECTS.map((s) => (
                 <li key={s.slug}>
                   <Link href={`/jeddah/${s.slug}`} className="text-slate-600 hover:text-brand-700 hover:underline">

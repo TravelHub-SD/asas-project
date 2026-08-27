@@ -12,7 +12,7 @@ import {
   MODES,
   PRIORITY_SUBJECTS,
   SUBJECTS,
-  publishedDistricts,
+  publishedRegions,
 } from "@/data/catalog";
 import { BRAND } from "@/lib/config";
 import { popularPages, waMessage } from "@/lib/content";
@@ -21,7 +21,7 @@ import { faqSchema, pageMetadata } from "@/lib/seo";
 const HOME_FAQS = [
   {
     q: "كيف أحصل على معلمة مناسبة لابني؟",
-    a: "راسلنا على واتساب وأخبرنا بالصف الدراسي والمادة والمنهج (سعودي أو بريطاني أو أمريكي) والحي والوقت المناسب. نرشّح لك معلمة من الشبكة تناسب هذه التفاصيل، وتكون الحصة الأولى للتعارف وتقييم مستوى الطالب.",
+    a: "راسلنا على واتساب وأخبرنا بالصف الدراسي والمادة والمنهج (سعودي أو بريطاني أو أمريكي) والحي والوقت المناسب. نرشّح لك معلمة متميّزة تناسب هذه التفاصيل، وتكون الحصة الأولى للتعارف وتقييم مستوى الطالب.",
   },
   {
     q: "هل الحصص منزلية أم أونلاين؟",
@@ -29,11 +29,11 @@ const HOME_FAQS = [
   },
   {
     q: "هل تغطّون المناهج العالمية؟",
-    a: "نعم، وهي أحد أقوى تخصّصاتنا. لدينا فريق مخصّص لتأسيس ومتابعة طلبة المنهجين البريطاني والأمريكي، يعمل من كتاب المدرسة ومنصّتها مباشرة لا من ملازم خارجية.",
+    a: "نعم، وهي أقوى تخصّصاتنا. لدينا فريق متميّز مخصّص لتأسيس ومتابعة طلبة المنهجين البريطاني والأمريكي، يعمل من كتاب المدرسة ومنصّتها مباشرة لا من ملازم خارجية.",
   },
   {
     q: "ما المدن التي تخدمونها؟",
-    a: "جدة والرياض حاليًا. في جدة نغطّي الحمدانية والمروة وشمال جدة وأحياء أخرى بحصص منزلية، وفي الرياض نغطّي الشمال والشرق والغرب والجنوب. الحصص الأونلاين متاحة في جميع مناطق المملكة.",
+    a: "جدة والرياض حاليًا. في جدة نغطّي شمال المدينة ووسطها وجنوبها بأكثر من ثلاثين حيًا، وفي الرياض نغطّي الشمال والشرق والغرب والجنوب. الحصص الأونلاين متاحة في جميع مناطق المملكة.",
   },
 ];
 
@@ -45,9 +45,9 @@ const WHY_US = [
 ];
 
 export const metadata: Metadata = pageMetadata({
-  title: `معلمون ومعلمات خصوصيون في جدة والرياض`,
+  title: `مدرسة خصوصية في جدة والرياض — تأسيس دولي وقدرات وتحصيلي`,
   description:
-    "شبكة معلمين ومعلمات خبرة في جدة والرياض — تأسيس ومتابعة لجميع المراحل، للمناهج السعودية والبريطانية والأمريكية، مع برامج القدرات والتحصيلي والتخاطب وصعوبات التعلم. تواصل عبر واتساب.",
+    "نخبة من المعلمين والمعلمات المتميّزين في جدة والرياض — تأسيس للمناهج البريطانية والأمريكية، وبرامج القدرات والتحصيلي، ومتابعة لجميع المواد والمراحل للمنهج السعودي، إضافة إلى التخاطب وصعوبات التعلم. تواصل عبر واتساب.",
   path: "/",
 });
 
@@ -65,12 +65,12 @@ export default function HomePage() {
             جدة · الرياض — حصص منزلية وأونلاين
           </p>
           <h1 className="mt-5 max-w-3xl text-3xl font-extrabold leading-tight text-slate-900 sm:text-5xl sm:leading-tight">
-            معلمون ومعلمات خبرة — تأسيس قوي ومتابعة لجميع المراحل
+            مدرسة خصوصية متميّزة لابنك — تأسيس دولي وقدرات وتحصيلي
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-9 text-slate-600">
-            {BRAND.nameAr} شبكة معلمين ومعلمات في جدة والرياض، متخصّصة في التأسيس ومتابعة
-            الطالب خطوة بخطوة — للمنهج السعودي وللمناهج البريطانية والأمريكية، إضافة إلى
-            برامج القدرات والتحصيلي وجلسات التخاطب وصعوبات التعلم.
+            نخبة من المعلمين والمعلمات المتميّزين في جدة والرياض — تأسيس للمناهج البريطانية
+            والأمريكية، وبرامج القدرات والتحصيلي، ومتابعة لكل المواد الدراسية للمنهج السعودي.
+            ونوفّر كذلك جلسات التخاطب وصعوبات التعلم.
           </p>
           <ContactButtons message={message} size="lg" className="mt-8" />
           <p className="mt-4 text-sm text-slate-500">
@@ -82,7 +82,7 @@ export default function HomePage() {
       <div className="mx-auto max-w-content space-y-16 px-4 py-16 sm:space-y-20">
         {/* 2) لماذا نحن */}
         <section>
-          <SectionTitle>لماذا {BRAND.nameAr}</SectionTitle>
+          <SectionTitle>لماذا نحن</SectionTitle>
           <p className="mt-4 max-w-3xl leading-9 text-slate-600">
             الفرق بين درس خصوصي عادي وتأسيس حقيقي هو الترتيب: أن نعرف أين توقّف الطالب فعلًا،
             ثم نبني من تلك النقطة بدل القفز مع المنهج وترك الفجوة تتّسع.
@@ -105,9 +105,9 @@ export default function HomePage() {
                 </h3>
                 <p className="mt-2 text-sm text-slate-500">منطقة {city.region}</p>
                 <p className="mt-3 leading-8 text-slate-600">{city.intro}</p>
-                {publishedDistricts(city).length > 0 && (
+                {publishedRegions(city).length > 0 && (
                   <p className="mt-4 text-sm text-brand-700">
-                    الأحياء: {publishedDistricts(city).map((d) => d.nameAr).join(" · ")}
+                    المناطق: {publishedRegions(city).map((r) => r.nameAr).join(" · ")}
                   </p>
                 )}
               </Link>
@@ -186,26 +186,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 7) التخاطب وصعوبات التعلم */}
-        {PRIORITY_SUBJECTS.filter((s) => s.slug === "special-needs").map((s) => (
-          <section key={s.slug} className="rounded-2xl border border-accent-500/30 bg-white p-6 sm:p-10">
-            <p className="text-sm font-semibold text-accent-600">تخصّص إضافي</p>
-            <h2 className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl">{s.nameAr}</h2>
-            <p className="mt-4 max-w-3xl leading-9 text-slate-600">{s.intro}</p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              {CITIES.map((city) => (
-                <Link
-                  key={city.slug}
-                  href={`/${city.slug}/special-needs`}
-                  className="inline-flex rounded-xl border border-brand-600 px-5 py-3 font-bold text-brand-700 transition hover:bg-brand-50"
-                >
-                  {s.h1Prefix} {city.nameAr}
-                </Link>
-              ))}
-            </div>
-          </section>
-        ))}
-
         {/* 8) صفحات شائعة */}
         <LinkGrid
           title="صفحات شائعة"
@@ -221,6 +201,29 @@ export default function HomePage() {
         />
 
         <FaqSection faqs={HOME_FAQS} />
+
+        {/* التخاطب وصعوبات التعلم — تخصّص إضافي، آخر الصفحة قبل الفوتر */}
+        {SUBJECTS.filter((s) => s.slug === "special-needs").map((s) => (
+          <section
+            key={s.slug}
+            className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8"
+          >
+            <p className="text-sm font-semibold text-slate-500">تخصّص إضافي</p>
+            <h2 className="mt-2 text-xl font-bold text-slate-900">{s.nameAr}</h2>
+            <p className="mt-3 max-w-3xl leading-8 text-slate-600">{s.intro}</p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              {CITIES.map((city) => (
+                <Link
+                  key={city.slug}
+                  href={`/${city.slug}/special-needs`}
+                  className="text-sm font-bold text-brand-700 hover:underline"
+                >
+                  {s.h1Prefix} {city.nameAr} ←
+                </Link>
+              ))}
+            </div>
+          </section>
+        ))}
       </div>
 
       <StickyContactBar message={message} />

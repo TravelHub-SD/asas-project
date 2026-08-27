@@ -1,5 +1,12 @@
 import type { City, District, Faq, Subject } from "@/data/catalog";
-import { CITIES, SUBJECTS, getSubject, publishedDistricts } from "@/data/catalog";
+import { isPrioritySlug } from "@/data/catalog";
+import {
+  CITIES,
+  SUBJECTS,
+  allDistricts,
+  getSubject,
+  publishedRegions,
+} from "@/data/catalog";
 
 /** رسالة واتساب جاهزة تذكر المادة والمكان — تصل الرسالة معبّأة قبل أن يكتب الزائر شيئًا. */
 export function waMessage(subjectName?: string, placeName?: string): string {
@@ -25,13 +32,11 @@ export function pageFaqs(
   const local: Faq = district
     ? {
         q: `هل لديكم معلمة ${subject.h1Noun} تسكن قريبًا من ${district.nameArFull}؟`,
-        a: `نرشّح أولًا معلمة من داخل ${district.nameArFull} أو من الأحياء المجاورة مثل ${district.nearby
-          .slice(0, 2)
-          .join(" و")}، لأن قرب المسافة يعني مواعيد أثبت وحصصًا لا تتأخر. إن لم تتوفّر معلمة قريبة في وقتك المفضّل نعرض عليك خيار الحصص أونلاين بدل الانتظار.`,
+        a: `نرشّح أولًا معلمة من داخل ${district.nameArFull} أو من الأحياء المجاورة له، لأن قرب المسافة يعني مواعيد أثبت وحصصًا لا تتأخر. إن لم تتوفّر معلمة قريبة في وقتك المفضّل نعرض عليك خيار الحصص أونلاين بدل الانتظار.`,
       }
     : {
         q: `في أي أحياء ${city.nameAr} تتوفّر حصص ${subject.nameAr}؟`,
-        a: `نغطّي ${publishedDistricts(city).length > 0 ? publishedDistricts(city).map((d) => d.nameAr).join(" و") + " " : ""}وأحياء أخرى في ${city.nameAr} بحصص منزلية حسب موقع المعلمة المتاحة، والحصص الأونلاين متاحة في كل الأحياء دون استثناء. أرسل لنا موقعك التقريبي والوقت المناسب لك لنرشّح المتاح.`,
+        a: `نغطّي ${publishedRegions(city).map((r) => r.nameAr).join(" و")} بحصص منزلية حسب موقع المعلمة المتاحة، والحصص الأونلاين متاحة في كل الأحياء دون استثناء. أرسل لنا موقعك التقريبي والوقت المناسب لك لنرشّح المتاح.`,
       };
 
   const scheduling: Faq = {
@@ -78,18 +83,45 @@ export function sameSubjectOtherCities(
   }));
 }
 
-/** نفس المادة في أحياء المدينة المنشورة. */
+/**
+ * نفس المادة في أحياء المدينة.
+ * المواد الأولوية لها صفحات (حيّ × مادة) في الأحياء المميّزة، وغيرها يربط بصفحة الحي.
+ */
 export function sameSubjectDistricts(
   subject: Subject,
   city: City,
   excludeDistrict?: string
 ): LinkItem[] {
-  return publishedDistricts(city)
-    .filter((d) => d.slug !== excludeDistrict)
-    .map((d) => ({
-      href: `/${city.slug}/${d.slug}`,
-      label: `${subject.nameAr} في ${d.nameArFull}`,
+  const priority = isPrioritySlug(subject.slug);
+  return allDistricts(city)
+    .filter(({ district }) => district.slug !== excludeDistrict)
+    .filter(({ district }) => (priority ? district.featured : true))
+    .slice(0, priority ? 12 : 8)
+    .map(({ district }) => ({
+      href: priority
+        ? `/${city.slug}/${district.slug}/${subject.slug}`
+        : `/${city.slug}/${district.slug}`,
+      label: priority
+        ? `${subject.h1Prefix} ${district.nameArFull}`
+        : `${subject.nameAr} في ${district.nameArFull}`,
     }));
+}
+
+/** المناطق داخل المدينة. */
+export function regionLinks(city: City): LinkItem[] {
+  return publishedRegions(city).map((r) => ({
+    href: `/${city.slug}/${r.slug}`,
+    label: `معلمون ومعلمات في ${r.nameAr}`,
+  }));
+}
+
+/** أحياء منطقة، مع ملاحظة الطلب الأولى لكل حي. */
+export function districtLinks(citySlug: string, districts: District[]): LinkItem[] {
+  return districts.map((d) => ({
+    href: `/${citySlug}/${d.slug}`,
+    label: `مدرسة خصوصية في ${d.nameArFull}`,
+    note: d.demand[0],
+  }));
 }
 
 /** المواد ذات الصلة المعرّفة يدويًا في الكتالوج. */
@@ -111,13 +143,13 @@ export function relatedSubjectLinks(
 export function popularPages(): LinkItem[] {
   const picks: Array<[string, string]> = [
     ["jeddah", "international"],
+    ["jeddah", "qudrat"],
+    ["jeddah", "tahsili"],
     ["jeddah", "english"],
-    ["jeddah", "math"],
-    ["jeddah", "special-needs"],
     ["riyadh", "international"],
-    ["riyadh", "english"],
     ["riyadh", "qudrat"],
     ["riyadh", "tahsili"],
+    ["riyadh", "math"],
   ];
   return picks
     .map(([citySlug, subjectSlug]) => {

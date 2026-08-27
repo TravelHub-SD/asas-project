@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BRAND, PHONE_DISPLAY, telLink } from "@/lib/config";
 import { CITIES, PRIORITY_SUBJECTS } from "@/data/catalog";
 import { PhoneIcon } from "./Icons";
+import BrandMark from "./BrandMark";
 
 /** الهيدر مع مبدّل المدينة — بدون جافاسكربت (عنصر details). */
 export default function Header() {
@@ -9,13 +10,11 @@ export default function Header() {
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
       <div className="mx-auto flex max-w-content items-center justify-between gap-4 px-4 py-3">
         <Link href="/" className="flex items-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-lg bg-brand-700 text-lg font-bold text-white">
-            أ
-          </span>
+          <BrandMark className="h-9 w-9" />
           <span className="flex flex-col leading-tight">
             <span className="text-lg font-bold text-brand-800">{BRAND.nameAr}</span>
             <span className="hidden text-xs text-slate-500 sm:block">
-              معلمون ومعلمات خبرة
+              معلمون ومعلمات متميّزون
             </span>
           </span>
         </Link>

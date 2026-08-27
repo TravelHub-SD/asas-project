@@ -18,10 +18,20 @@ const ROOT = process.cwd();
 const MEDIA = path.join(ROOT, ".next", "static", "media");
 const CSS_DIR = path.join(ROOT, ".next", "static", "css");
 
-const BRAND_AR = "أساس";
-const HEADLINE = "معلمون ومعلمات خبرة — تأسيس ومتابعة لجميع المراحل";
+const BRAND_AR = "مدرسة خصوصية";
+const HEADLINE = "نخبة من المعلمين والمعلمات المتميّزين لجميع المراحل";
 const SUBLINE = "جدة · الرياض — حصص منزلية وأونلاين لجميع المواد والمناهج";
-const CHIPS = ["تأسيس انترناشونال", "تخاطب وصعوبات تعلم", "قدرات وتحصيلي"];
+const CHIPS = ["تأسيس انترناشونال", "قدرات", "تحصيلي"];
+
+/** علامة البراند — رسم مستقل، لا حرف من الاسم (تفاديًا لقراءة «ممدرسة»). */
+const capPath =
+  '<path d="M12 4 2.5 8.5 12 13l9.5-4.5L12 4Z"/>' +
+  '<path d="M6 10.8v4.4c0 1.6 2.7 2.9 6 2.9s6-1.3 6-2.9v-4.4"/>' +
+  '<path d="M21.5 8.5v5"/>';
+const markSvg = (size, stroke) =>
+  `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="${stroke}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${capPath}</svg>`;
+const MARK_SVG = `<div class="badge">${markSvg(38, "#1d5449")}</div>`;
+const MARK_SVG_LARGE = markSvg(300, "#ffffff");
 
 /** يستخرج ملفات Tajawal الخاصة بالنطاق العربي من CSS المُولَّد. */
 function arabicFontFiles() {
@@ -121,7 +131,7 @@ p{position:relative;font-size:26px;font-weight:400;margin-top:22px;color:#d3ebe4
 .chip.solid{background:#c98a1f;border-color:#c98a1f}
 </style></head><body>
 <div class="glow g1"></div><div class="glow g2"></div>
-<div class="mark"><div class="badge">${BRAND_AR.slice(0, 1)}</div><div class="name">${BRAND_AR}</div></div>
+<div class="mark">${MARK_SVG}<div class="name">${BRAND_AR}</div></div>
 <h1>${HEADLINE}</h1>
 <p>${SUBLINE}</p>
 <div class="row">${CHIPS.map((c, i) => `<div class="chip${i === 0 ? " solid" : ""}">${c}</div>`).join("")}</div>
@@ -136,7 +146,7 @@ body{font-family:Tajawal,sans-serif;display:flex;align-items:center;justify-cont
   background:linear-gradient(135deg,#1d5449 0%,#2f8570 100%);color:#fff;
   font-size:340px;font-weight:800;line-height:1}
 span{transform:translateY(60px)}
-</style></head><body><span>${BRAND_AR.slice(0, 1)}</span></body></html>`;
+</style></head><body><span>${MARK_SVG_LARGE}</span></body></html>`;
 
 shoot(chromium, ogHtml, path.join(ROOT, "public", "og.png"), 1200, 630);
 shoot(chromium, iconHtml, path.join(ROOT, "app", "icon.png"), 512, 512);
