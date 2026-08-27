@@ -3,6 +3,7 @@ import { BRAND, PHONE_DISPLAY, telLink } from "@/lib/config";
 import { CITIES, PRIORITY_SUBJECTS } from "@/data/catalog";
 import { PhoneIcon } from "./Icons";
 import BrandMark from "./BrandMark";
+import BrandWordmark from "./BrandWordmark";
 
 /** الهيدر مع مبدّل المدينة — بدون جافاسكربت (عنصر details). */
 export default function Header() {
@@ -12,7 +13,7 @@ export default function Header() {
         <Link href="/" className="flex items-center gap-2">
           <BrandMark className="h-9 w-9" />
           <span className="flex flex-col leading-tight">
-            <span className="text-lg font-bold text-brand-800">{BRAND.nameAr}</span>
+            <BrandWordmark className="h-[22px] text-brand-800" />
             <span className="hidden text-xs text-slate-500 sm:block">
               معلمون ومعلمات متميّزون
             </span>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BRAND, PHONE_DISPLAY, telLink, waLink } from "@/lib/config";
 import { CITIES, SUBJECTS, allDistricts, publishedRegions } from "@/data/catalog";
 import BrandMark from "./BrandMark";
+import BrandWordmark from "./BrandWordmark";
 
 export default function Footer() {
   return (
@@ -11,7 +12,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-2">
               <BrandMark className="h-9 w-9" />
-              <span className="text-lg font-bold text-brand-800">{BRAND.nameAr}</span>
+              <BrandWordmark className="h-[22px] text-brand-800" />
             </div>
             <p className="mt-4 text-sm leading-7 text-slate-600">{BRAND.tagline}</p>
             <div className="mt-4 flex flex-col gap-2 text-sm">
