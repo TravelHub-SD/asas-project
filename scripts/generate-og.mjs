@@ -18,9 +18,9 @@ const ROOT = process.cwd();
 const MEDIA = path.join(ROOT, ".next", "static", "media");
 const CSS_DIR = path.join(ROOT, ".next", "static", "css");
 
-const BRAND_AR = "مدرسة خصوصية";
+const BRAND_AR = "مُدَرِّسة خصوصية";
 const HEADLINE = "نخبة من المعلمين والمعلمات المتميّزين لجميع المراحل";
-const SUBLINE = "جدة · الرياض — حصص منزلية وأونلاين لجميع المواد والمناهج";
+const SUBLINE = "معلمات ومعلمون خصوصيون في جدة والرياض — حصص منزلية وأونلاين";
 const CHIPS = ["تأسيس انترناشونال", "قدرات", "تحصيلي"];
 
 /** علامة البراند — رسم مستقل، لا حرف من الاسم (تفاديًا لقراءة «ممدرسة»). */

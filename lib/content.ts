@@ -119,7 +119,7 @@ export function regionLinks(city: City): LinkItem[] {
 export function districtLinks(citySlug: string, districts: District[]): LinkItem[] {
   return districts.map((d) => ({
     href: `/${citySlug}/${d.slug}`,
-    label: `مدرسة خصوصية في ${d.nameArFull}`,
+    label: `معلمة خصوصية في ${d.nameArFull}`,
     note: d.demand[0],
   }));
 }

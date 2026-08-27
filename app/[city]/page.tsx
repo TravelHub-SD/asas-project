@@ -42,7 +42,7 @@ export function generateMetadata({ params }: Params): Metadata {
   const city = getCity(params.city);
   if (!city) return {};
   return pageMetadata({
-    title: `مدرسة خصوصية في ${city.nameAr}`,
+    title: `معلمة خصوصية في ${city.nameAr}`,
     description: `معلمون ومعلمات متميّزون في ${city.nameAr} لجميع المواد والمراحل — تأسيس ومتابعة للمناهج السعودية والبريطانية والأمريكية، وبرامج القدرات والتحصيلي والتخاطب وصعوبات التعلم. حصص منزلية أو أونلاين.`,
     path: `/${city.slug}`,
   });
@@ -98,7 +98,7 @@ export default function CityPage({ params }: Params) {
 
       <section className="mx-auto max-w-content px-4 py-10">
         <h1 className="max-w-3xl text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl sm:leading-tight">
-          مدرسة خصوصية في {city.nameAr}
+          معلمة خصوصية متميّزة في {city.nameAr}
         </h1>
         <p className="mt-5 max-w-3xl text-lg leading-9 text-slate-600">{city.intro}</p>
         <p className="mt-4 max-w-3xl leading-9 text-slate-600">{city.localNote}</p>

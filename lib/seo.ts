@@ -68,10 +68,15 @@ export function subjectPageDescription(
 
 type Json = Record<string, unknown>;
 
+/**
+ * الكيان خدمة معلمات خصوصيات لا منشأة تعليمية مرخّصة،
+ * ولذلك النوع LocalBusiness لا EducationalOrganization —
+ * الأخير يصرّح لقوقل بأننا مؤسسة تعليمية وهو ما لا ينطبق علينا.
+ */
 export function organizationSchema(): Json {
   return {
     "@context": "https://schema.org",
-    "@type": "EducationalOrganization",
+    "@type": "LocalBusiness",
     "@id": `${SITE_URL}/#organization`,
     name: BRAND.nameAr,
     alternateName: BRAND.nameEn,

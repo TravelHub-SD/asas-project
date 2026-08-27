@@ -76,7 +76,7 @@ export default function RegionPage({
 
       <section className="mx-auto max-w-content px-4 py-10">
         <h1 className="max-w-3xl text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl sm:leading-tight">
-          مدرسة خصوصية في {region.nameAr}
+          معلمة خصوصية متميّزة في {region.nameAr}
         </h1>
         <p className="mt-5 max-w-3xl text-lg leading-9 text-slate-600">{region.intro}</p>
         <ContactButtons message={message} size="lg" className="mt-8" />
@@ -115,7 +115,7 @@ export default function RegionPage({
         )}
 
         <CtaBox
-          title={`ابحث عن مدرسة خصوصية في ${region.nameAr}`}
+          title={`ابحث عن معلمة خصوصية في ${region.nameAr}`}
           body={`أرسل لنا الحي والصف الدراسي والمادة والوقت المناسب، ونرشّح لك معلمة متميّزة قريبة منك.`}
           message={message}
         />
@@ -127,7 +127,7 @@ export default function RegionPage({
           links={[
             ...otherRegions.map((r) => ({
               href: `/${city.slug}/${r.slug}`,
-              label: `مدرسة خصوصية في ${r.nameAr}`,
+              label: `معلمة خصوصية في ${r.nameAr}`,
             })),
             { href: `/${city.slug}`, label: `كل خدماتنا في ${city.nameAr}` },
           ]}
@@ -147,7 +147,7 @@ export function regionMetadata(city: City, region: Region) {
     .map((d) => d.nameAr)
     .join(" · ");
   return pageMetadata({
-    title: `مدرسة خصوصية في ${region.nameAr}`,
+    title: `معلمة خصوصية في ${region.nameAr}`,
     description: `معلمون ومعلمات متميّزون في ${region.nameAr} لجميع المواد والمراحل — ${names} وغيرها. تأسيس للمناهج الدولية وبرامج القدرات والتحصيلي، حصص منزلية أو أونلاين. تواصل عبر واتساب.`,
     path: `/${city.slug}/${region.slug}`,
   });
