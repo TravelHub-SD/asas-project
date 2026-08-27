@@ -61,7 +61,7 @@ export function subjectPageDescription(
   placeName: string
 ): string {
   const kind = subject.kind === "program" ? "برنامج" : "دروس";
-  return `${kind} ${subject.nameAr} في ${placeName} مع معلمين ومعلمات خبرة — ${subject.stages}. حصص منزلية أو أونلاين، ومتابعة دورية. تواصل عبر واتساب لترشيح المعلمة المناسبة.`;
+  return `${kind} ${subject.nameAr} في ${placeName} مع معلمين ومعلمات خبرة — ${subject.stages}. حصص حضورية أو أونلاين، ومتابعة دورية. تواصل عبر واتساب لترشيح المعلمة المناسبة.`;
 }
 
 /* ---------------- JSON-LD ---------------- */

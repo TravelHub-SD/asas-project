@@ -21,6 +21,14 @@ import {
   type Crumb,
 } from "@/lib/seo";
 
+/** صيغة العدد العربية: ٣–١٠ جمع، وما فوقها مفرد منصوب. */
+function countLabel(n: number): string {
+  if (n === 1) return "حي واحد";
+  if (n === 2) return "حيّان";
+  if (n <= 10) return `${n} أحياء`;
+  return `${n} حيًا`;
+}
+
 /** صفحة منطقة: /jeddah/north — تسرد أحياءها وتوجّه إليها. */
 export default function RegionPage({
   city,
@@ -32,8 +40,11 @@ export default function RegionPage({
   const path = `/${city.slug}/${region.slug}`;
   const message = waMessage(undefined, region.nameAr);
   const districts = regionDistricts(region);
-  const featured = districts.filter((d) => d.featured);
-  const others = districts.filter((d) => !d.featured);
+  // منطقة بلا أحياء مميّزة (مثل شرق جدة) تُعرض أحياؤها كلها تحت عنوان واحد
+  // بدل قائمة أساسية فارغة يتبعها عنوان «أحياء أخرى».
+  const hasFeatured = districts.some((d) => d.featured);
+  const featured = hasFeatured ? districts.filter((d) => d.featured) : districts;
+  const others = hasFeatured ? districts.filter((d) => !d.featured) : [];
   const otherRegions = publishedRegions(city).filter((r) => r.slug !== region.slug);
 
   const crumbs: Crumb[] = [
@@ -45,10 +56,12 @@ export default function RegionPage({
   const faqs = [
     {
       q: `ما الأحياء التي تغطّونها في ${region.nameAr}؟`,
-      a: `نغطّي ${districts.length} حيًا في ${region.nameAr}، منها ${featured
+      a: `نغطّي ${countLabel(districts.length)} في ${region.nameAr}: ${featured
         .slice(0, 4)
         .map((d) => d.nameAr)
-        .join(" و")} وغيرها. لكل حي صفحة توضّح طبيعة الطلب فيه، والحصص الأونلاين متاحة في جميع الأحياء دون استثناء.`,
+        .join(" و")}${
+        districts.length > 4 ? " وغيرها" : ""
+      }. لكل حي صفحة توضّح طبيعة الطلب فيه، والحصص الأونلاين متاحة في جميع الأحياء دون استثناء.`,
     },
     {
       q: `هل تصل المعلمة إلى أي حي في ${region.nameAr}؟`,
@@ -60,7 +73,7 @@ export default function RegionPage({
     },
     {
       q: `كيف نبدأ؟`,
-      a: `راسلنا على واتساب وأخبرنا بالحي والصف الدراسي والمادة والوقت المناسب، فنرشّح معلمة متميّزة تناسب هذه التفاصيل. الحصة الأولى للتعارف وتقييم المستوى.`,
+      a: `راسلنا على واتساب وأخبرنا بالحي والصف الدراسي والمادة والوقت المناسب، فنرشّح معلمة متميّزة تناسب هذه التفاصيل، ونتّفق معك على الجدول وخطة البرنامج.`,
     },
   ];
 
@@ -84,8 +97,12 @@ export default function RegionPage({
 
       <div className="mx-auto max-w-content space-y-16 px-4 pb-16">
         <LinkGrid
-          title={`أحياء ${region.nameAr} الأكثر طلبًا`}
-          description="الأحياء التي نغطّيها بأكبر عدد من المعلمين والمعلمات المتميّزين."
+          title={hasFeatured ? `أحياء ${region.nameAr} الأكثر طلبًا` : `الأحياء التي نغطّيها في ${region.nameAr}`}
+          description={
+            hasFeatured
+              ? "الأحياء التي نغطّيها بأكبر عدد من المعلمين والمعلمات المتميّزين."
+              : `لكل حي صفحة توضّح طبيعة الطلب فيه وأقرب المعلمات إليه.`
+          }
           links={districtLinks(city.slug, featured)}
         />
 
@@ -148,7 +165,7 @@ export function regionMetadata(city: City, region: Region) {
     .join(" · ");
   return pageMetadata({
     title: `معلمة خصوصية في ${region.nameAr}`,
-    description: `معلمون ومعلمات متميّزون في ${region.nameAr} لجميع المواد والمراحل — ${names} وغيرها. تأسيس للمناهج الدولية وبرامج القدرات والتحصيلي، حصص منزلية أو أونلاين. تواصل عبر واتساب.`,
+    description: `معلمون ومعلمات متميّزون في ${region.nameAr} لجميع المواد والمراحل — ${names} وغيرها. تأسيس للمناهج الانترناشونال وبرامج القدرات والتحصيلي، حصص حضورية أو أونلاين. تواصل عبر واتساب.`,
     path: `/${city.slug}/${region.slug}`,
   });
 }

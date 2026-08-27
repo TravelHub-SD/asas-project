@@ -4,7 +4,7 @@ import FaqSection from "@/components/FaqSection";
 import JsonLd from "@/components/JsonLd";
 import LinkGrid from "@/components/LinkGrid";
 import StickyContactBar from "@/components/StickyContactBar";
-import { CheckList, SectionTitle } from "@/components/Prose";
+import { CheckList, Paragraphs, SectionTitle } from "@/components/Prose";
 import type { City, Subject } from "@/data/catalog";
 import {
   pageFaqs,
@@ -65,7 +65,7 @@ export default function SubjectPage({
         <h1 className="mt-4 max-w-3xl text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl sm:leading-tight">
           {heading}
         </h1>
-        <p className="mt-5 max-w-3xl text-lg leading-9 text-slate-600">{subject.intro}</p>
+        <Paragraphs text={subject.intro} />
         <ContactButtons message={message} size="lg" className="mt-8" />
       </section>
 

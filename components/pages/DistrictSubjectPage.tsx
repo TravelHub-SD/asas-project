@@ -82,7 +82,7 @@ export default function DistrictSubjectPage({
     },
     {
       q: `كيف نبدأ في ${district.nameAr}؟`,
-      a: `راسلنا على واتساب وأخبرنا بالصف الدراسي والوقت المناسب، ونرشّح معلمة متميّزة في ${subject.nameAr} تخدم ${placeName}. الحصة الأولى للتعارف وتقييم المستوى قبل وضع الخطة.`,
+      a: `راسلنا على واتساب وأخبرنا بالصف الدراسي والوقت المناسب، ونرشّح معلمة متميّزة في ${subject.nameAr} تخدم ${placeName}، ونتّفق معك على الجدول وخطة البرنامج قبل البدء.`,
     },
   ];
 
@@ -194,7 +194,7 @@ export function districtSubjectMetadata(
 ) {
   return pageMetadata({
     title: `${subject.h1Prefix} ${district.nameArFull}`,
-    description: `${subject.nameAr} في ${district.nameArFull} ضمن ${region.nameAr} — معلمون ومعلمات متميّزون، ${subject.stages}. حصص منزلية أو أونلاين. تواصل عبر واتساب لترشيح المعلمة المناسبة.`,
+    description: `${subject.nameAr} في ${district.nameArFull} ضمن ${region.nameAr} — معلمون ومعلمات متميّزون، ${subject.stages}. حصص حضورية أو أونلاين. تواصل عبر واتساب لترشيح المعلمة المناسبة.`,
     path: `/${city.slug}/${district.slug}/${subject.slug}`,
   });
 }

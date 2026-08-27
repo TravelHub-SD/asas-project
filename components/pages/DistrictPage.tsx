@@ -57,7 +57,7 @@ export default function DistrictPage({
     },
     {
       q: `ما الذي يطلبه سكان ${district.nameAr} أكثر من غيره؟`,
-      a: `${district.demand[1] ?? district.demand[0]}. نغطّي إلى جانب ذلك المواد الأساسية كلها والتأسيس للمناهج الدولية وبرامج القدرات والتحصيلي، لكن ترشيحنا يبدأ دائمًا من النمط الغالب في الحي.`,
+      a: `${district.demand[1] ?? district.demand[0]}. نغطّي إلى جانب ذلك المواد الأساسية كلها والتأسيس للمناهج الانترناشونال وبرامج القدرات والتحصيلي، لكن ترشيحنا يبدأ دائمًا من النمط الغالب في الحي.`,
     },
     {
       q: `ما الأوقات المتاحة للحصص في ${district.nameAr}؟`,
@@ -67,7 +67,7 @@ export default function DistrictPage({
     },
     {
       q: `كيف تبدأ أول حصة في ${district.nameAr}؟`,
-      a: `بعد التواصل عبر واتساب وتحديد المادة والصف، نرشّح معلمة متميّزة مناسبة وتُحدَّد حصة أولى للتعارف وتقييم مستوى الطالب، ثم يُتّفق على جدول ثابت بناءً على نتيجة التقييم.`,
+      a: `بعد التواصل عبر واتساب وتحديد المادة والصف، نرشّح معلمة متميّزة مناسبة، ويُتّفق معك على جدول ثابت وخطة واضحة قبل بدء الحصص.`,
     },
   ];
 
@@ -91,7 +91,7 @@ export default function DistrictPage({
         </h1>
         <p className="mt-5 max-w-3xl text-lg leading-9 text-slate-600">
           {district.demand[0]}. {district.demand[1] ?? ""} نغطّي {district.nameArFull} ضمن{" "}
-          {region.nameAr} بمعلمين ومعلمات متميّزين، بحصص منزلية داخل الحي أو أونلاين.
+          {region.nameAr} بمعلمين ومعلمات متميّزين، بحصص حضورية داخل الحي أو أونلاين.
         </p>
         <ContactButtons message={message} size="lg" className="mt-8" />
       </section>
@@ -136,7 +136,7 @@ export default function DistrictPage({
 
         <LinkGrid
           title={`المواد المتاحة لسكان ${placeName}`}
-          description={`صفحات المواد أدناه تغطّي ${city.nameAr} كاملة، وتشمل الحصص المنزلية في ${district.nameAr}.`}
+          description={`صفحات المواد أدناه تغطّي ${city.nameAr} كاملة، وتشمل الحصص الحضورية في ${district.nameAr}.`}
           links={REGULAR_SUBJECTS.map((s) => ({
             href: `/${city.slug}/${s.slug}`,
             label: `${s.h1Prefix} ${city.nameAr}`,
@@ -169,7 +169,7 @@ export default function DistrictPage({
 export function districtMetadata(city: City, region: Region, district: District) {
   return pageMetadata({
     title: `معلمة خصوصية في ${district.nameArFull} — ${city.nameAr}`,
-    description: `معلمون ومعلمات متميّزون في ${district.nameArFull} ضمن ${region.nameAr} لجميع المواد والمراحل — حصص منزلية أو أونلاين، تأسيس للمناهج الدولية وبرامج القدرات والتحصيلي. تواصل عبر واتساب.`,
+    description: `معلمون ومعلمات متميّزون في ${district.nameArFull} ضمن ${region.nameAr} لجميع المواد والمراحل — حصص حضورية أو أونلاين، تأسيس للمناهج الانترناشونال وبرامج القدرات والتحصيلي. تواصل عبر واتساب.`,
     path: `/${city.slug}/${district.slug}`,
   });
 }

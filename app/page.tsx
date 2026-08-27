@@ -5,7 +5,7 @@ import FaqSection from "@/components/FaqSection";
 import JsonLd from "@/components/JsonLd";
 import LinkGrid from "@/components/LinkGrid";
 import StickyContactBar from "@/components/StickyContactBar";
-import { CheckList, SectionTitle } from "@/components/Prose";
+import { CheckList, Paragraphs, SectionTitle } from "@/components/Prose";
 import {
   CITIES,
   CURRICULA,
@@ -21,11 +21,11 @@ import { faqSchema, pageMetadata } from "@/lib/seo";
 const HOME_FAQS = [
   {
     q: "كيف أحصل على معلمة مناسبة لابني؟",
-    a: "راسلنا على واتساب وأخبرنا بالصف الدراسي والمادة والمنهج (سعودي أو بريطاني أو أمريكي) والحي والوقت المناسب. نرشّح لك معلمة متميّزة تناسب هذه التفاصيل، وتكون الحصة الأولى للتعارف وتقييم مستوى الطالب.",
+    a: "راسلنا على واتساب وأخبرنا بالصف الدراسي والمادة والمنهج (سعودي أو بريطاني أو أمريكي) والحي والوقت المناسب. نرشّح لك معلمة متميّزة تناسب هذه التفاصيل، ونتّفق معك على الجدول وخطة البرنامج قبل البدء.",
   },
   {
-    q: "هل الحصص منزلية أم أونلاين؟",
-    a: "الاثنان متاحان. الحصص المنزلية متوفّرة ضمن نطاق موقع المعلمة، والأونلاين متاحة في كل الأحياء وتناسب المواد الحسابية وبرامج القدرات و STEP. بعض الأسر تفضّل الحضور إلى مقر المعلمة، وهذا خيار متاح أيضًا.",
+    q: "هل الحصص حضورية أم أونلاين؟",
+    a: "الاثنان متاحان. الحصص الحضورية متوفّرة ضمن نطاق موقع المعلمة، والأونلاين متاحة في كل الأحياء وتناسب المواد الحسابية وبرامج القدرات و STEP. بعض الأسر تفضّل الحضور إلى مقر المعلمة، وهذا خيار متاح أيضًا.",
   },
   {
     q: "هل تغطّون المناهج العالمية؟",
@@ -45,7 +45,7 @@ const WHY_US = [
 ];
 
 export const metadata: Metadata = pageMetadata({
-  title: `معلمة خصوصية في جدة والرياض — تأسيس دولي وقدرات وتحصيلي`,
+  title: `معلمة خصوصية في جدة والرياض — تأسيس انترناشونال وقدرات وتحصيلي`,
   description:
     "نخبة من المعلمين والمعلمات المتميّزين في جدة والرياض — تأسيس للمناهج البريطانية والأمريكية، وبرامج القدرات والتحصيلي، ومتابعة لجميع المواد والمراحل للمنهج السعودي، إضافة إلى التخاطب وصعوبات التعلم. تواصل عبر واتساب.",
   path: "/",
@@ -62,10 +62,10 @@ export default function HomePage() {
       <section className="bg-gradient-to-b from-brand-50 to-sand-50">
         <div className="mx-auto max-w-content px-4 py-16 sm:py-24">
           <p className="inline-flex rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-brand-700 shadow-sm">
-            جدة · الرياض — حصص منزلية وأونلاين
+            جدة · الرياض — حصص حضورية وأونلاين
           </p>
           <h1 className="mt-5 max-w-3xl text-3xl font-extrabold leading-tight text-slate-900 sm:text-5xl sm:leading-tight">
-            معلمة خصوصية متميّزة لابنك — تأسيس دولي وقدرات وتحصيلي
+            معلمة خصوصية متميّزة لابنك — تأسيس انترناشونال وقدرات وتحصيلي
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-9 text-slate-600">
             نخبة من المعلمين والمعلمات المتميّزين في جدة والرياض — تأسيس للمناهج البريطانية
@@ -210,7 +210,10 @@ export default function HomePage() {
           >
             <p className="text-sm font-semibold text-slate-500">تخصّص إضافي</p>
             <h2 className="mt-2 text-xl font-bold text-slate-900">{s.nameAr}</h2>
-            <p className="mt-3 max-w-3xl leading-8 text-slate-600">{s.intro}</p>
+            <Paragraphs
+              text={s.intro}
+              className="mt-3 max-w-3xl leading-8 text-slate-600"
+            />
             <div className="mt-5 flex flex-wrap gap-3">
               {CITIES.map((city) => (
                 <Link

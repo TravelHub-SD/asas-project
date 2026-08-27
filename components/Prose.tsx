@@ -20,3 +20,27 @@ export function CheckList({ items }: { items: readonly string[] }) {
     </ul>
   );
 }
+
+/**
+ * يعرض نصًا قد يحوي فقرات مفصولة بسطر فارغ.
+ * نصوص المواد الطويلة (مثل القدرات) تُكتب بفقرات في الكتالوج،
+ * ووضعها في وسم <p> واحد يبتلع الفواصل ويجعلها كتلة واحدة.
+ */
+export function Paragraphs({
+  text,
+  className = "mt-5 max-w-3xl text-lg leading-9 text-slate-600",
+}: {
+  text: string;
+  className?: string;
+}) {
+  const parts = text.split(/\n\s*\n/).filter(Boolean);
+  return (
+    <>
+      {parts.map((part, i) => (
+        <p key={i} className={i === 0 ? className : `${className} mt-4`}>
+          {part}
+        </p>
+      ))}
+    </>
+  );
+}
