@@ -42,13 +42,26 @@ Next.js 14 (App Router) · TypeScript · Tailwind CSS · صفحات ثابتة �
 
 ### الدومين
 
-قيمة `SITE_URL` الافتراضية `https://asas.sa` وهي **مؤقتة** — تُستخدم في
-`canonical` و`sitemap.xml` و`robots.txt` و`og:url`.
-بعد شراء الدومين، اضبط متغيّر البيئة في Vercel:
+`SITE_URL` تُستخدم في `canonical` و`og:url` و`sitemap.xml` و`robots.txt`،
+وتُستنتج بهذا الترتيب (`lib/config.ts`):
+
+1. `NEXT_PUBLIC_SITE_URL` — الدومين النهائي بعد شرائه، يتجاوز كل ما بعده
+2. `VERCEL_PROJECT_PRODUCTION_URL` — دومين المشروع الإنتاجي على Vercel (ثابت عبر النشرات)
+3. `VERCEL_URL` — رابط النشرة الواحدة (احتياطي)
+4. `https://asas.sa` — احتياطي محلي للتطوير فقط
+
+بهذا يكون النشر على Vercel قبل شراء الدومين **صحيحًا تلقائيًا**: كل canonical
+يشير إلى دومين المشروع الفعلي لا إلى دومين غير موجود.
+
+بعد شراء الدومين وربطه، اضبط في Vercel:
 
 ```
 NEXT_PUBLIC_SITE_URL=https://your-domain.com
 ```
+
+> ⚠️ **لا ترفع `sitemap.xml` إلى Google Search Console قبل ربط الدومين النهائي.**
+> لو فهرس قوقل نسخة `.vercel.app` ستحتاج لاحقًا إلى تحويلات 301 وتنظيف فهرسة
+> بدل بداية نظيفة على الدومين الصحيح.
 
 ---
 

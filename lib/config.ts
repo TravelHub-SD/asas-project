@@ -10,10 +10,31 @@ export const BRAND = {
   whatsapp: "966557930608",
 } as const;
 
-/** الدومين النهائي معلّق على اعتماد العميلة — يُحدَّث من هنا أو عبر متغيّر البيئة. */
-export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://asas.sa"
-).replace(/\/$/, "");
+/**
+ * الدومين المستخدَم في canonical و og:url و sitemap.xml و robots.txt.
+ *
+ * ترتيب الأولوية:
+ *   1. NEXT_PUBLIC_SITE_URL — الدومين النهائي بعد شرائه (يتجاوز كل ما بعده)
+ *   2. VERCEL_PROJECT_PRODUCTION_URL — دومين المشروع الإنتاجي على Vercel،
+ *      ثابت عبر النشرات ولذلك يصلح لـ canonical
+ *   3. VERCEL_URL — رابط النشرة الواحدة (احتياطي أخير)
+ *   4. الاحتياطي المحلي للتطوير
+ *
+ * السبب في وجود 2 و3: النشر على Vercel قبل شراء الدومين كان سيجعل كل canonical
+ * يشير إلى دومين غير موجود، وهو ما يمنع الفهرسة بدل أن يساعدها.
+ */
+function resolveSiteUrl(): string {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL;
+  if (explicit) return explicit;
+
+  const vercelHost =
+    process.env.VERCEL_PROJECT_PRODUCTION_URL ?? process.env.VERCEL_URL;
+  if (vercelHost) return `https://${vercelHost}`;
+
+  return "https://asas.sa";
+}
+
+export const SITE_URL = resolveSiteUrl().replace(/\/+$/, "");
 
 export const OG_IMAGE = "/og.png";
 
