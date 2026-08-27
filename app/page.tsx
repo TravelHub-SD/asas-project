@@ -65,7 +65,7 @@ export default function HomePage() {
             جدة · الرياض — حصص منزلية وأونلاين
           </p>
           <h1 className="mt-5 max-w-3xl text-3xl font-extrabold leading-tight text-slate-900 sm:text-5xl sm:leading-tight">
-            مُدَرِّسة خصوصية متميّزة لابنك — تأسيس دولي وقدرات وتحصيلي
+            معلمة خصوصية متميّزة لابنك — تأسيس دولي وقدرات وتحصيلي
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-9 text-slate-600">
             نخبة من المعلمين والمعلمات المتميّزين في جدة والرياض — تأسيس للمناهج البريطانية

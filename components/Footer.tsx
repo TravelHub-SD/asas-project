@@ -82,7 +82,9 @@ export default function Footer() {
 
         <div className="mt-10 flex flex-col gap-3 border-t border-slate-200 pt-6 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {new Date().getFullYear()} {BRAND.nameAr} — {BRAND.nameEn}. جميع الحقوق محفوظة.
+            © {new Date().getFullYear()}{" "}
+            <BrandWordmark className="inline-block h-[13px] translate-y-[2px]" /> —{" "}
+            {BRAND.nameEn}. جميع الحقوق محفوظة.
           </p>
           <Link href="/contact" className="hover:text-brand-700 hover:underline">
             تواصل معنا
