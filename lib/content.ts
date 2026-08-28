@@ -58,6 +58,8 @@ export interface LinkItem {
   href: string;
   label: string;
   note?: string;
+  /** يُبرز المواد الأولوية بصريًا عن باقي الروابط */
+  emphasis?: boolean;
 }
 
 /** المواد الشقيقة داخل نفس المدينة — وقود الربط الداخلي. */
@@ -69,6 +71,7 @@ export function siblingSubjectLinks(
     href: `/${city.slug}/${s.slug}`,
     label: `${s.h1Prefix} ${city.nameAr}`,
     note: s.blurb,
+    emphasis: Boolean(s.priority),
   }));
 }
 
@@ -136,6 +139,7 @@ export function relatedSubjectLinks(
       href: `/${city.slug}/${s.slug}`,
       label: `${s.h1Prefix} ${city.nameAr}`,
       note: s.blurb,
+      emphasis: Boolean(s.priority),
     }));
 }
 
@@ -152,14 +156,15 @@ export function popularPages(): LinkItem[] {
     ["riyadh", "math"],
   ];
   return picks
-    .map(([citySlug, subjectSlug]) => {
+    .map(([citySlug, subjectSlug]): LinkItem | null => {
       const city = CITIES.find((c) => c.slug === citySlug);
       const subject = getSubject(subjectSlug);
       if (!city || !subject) return null;
       return {
         href: `/${city.slug}/${subject.slug}`,
         label: `${subject.h1Prefix} ${city.nameAr}`,
+        emphasis: Boolean(subject.priority),
       };
     })
-    .filter((l): l is LinkItem => Boolean(l));
+    .filter((l): l is LinkItem => l !== null);
 }

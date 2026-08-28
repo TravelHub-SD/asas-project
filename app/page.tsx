@@ -28,7 +28,7 @@ const HOME_FAQS = [
     a: "الاثنان متاحان. الحصص الحضورية متوفّرة ضمن نطاق موقع المعلمة، والأونلاين متاحة في كل الأحياء وتناسب المواد الحسابية وبرامج القدرات و STEP. بعض الأسر تفضّل الحضور إلى مقر المعلمة، وهذا خيار متاح أيضًا.",
   },
   {
-    q: "هل تغطّون المناهج العالمية؟",
+    q: "هل تغطّون المناهج الانترناشونال؟",
     a: "نعم، وهي أقوى تخصّصاتنا. لدينا فريق متميّز مخصّص لتأسيس ومتابعة طلبة المنهجين البريطاني والأمريكي، يعمل من كتاب المدرسة ومنصّتها مباشرة لا من ملازم خارجية.",
   },
   {
@@ -133,7 +133,13 @@ export default function HomePage() {
                     : "border-slate-200 bg-white hover:border-brand-300 hover:bg-brand-50"
                 }`}
               >
-                <span className="block font-bold text-slate-800 group-hover:text-brand-800">
+                <span
+                  className={`block group-hover:text-brand-800 ${
+                    s.priority
+                      ? "text-base font-extrabold text-brand-800"
+                      : "font-bold text-slate-800"
+                  }`}
+                >
                   {s.nameAr}
                 </span>
                 <span className="mt-1 block text-sm text-slate-500">{s.blurb}</span>

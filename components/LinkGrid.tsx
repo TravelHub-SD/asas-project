@@ -26,7 +26,11 @@ export default function LinkGrid({
             href={l.href}
             className="group rounded-xl border border-slate-200 bg-white p-4 transition hover:border-brand-300 hover:bg-brand-50"
           >
-            <span className="block font-bold text-slate-800 group-hover:text-brand-800">
+            <span
+              className={`block group-hover:text-brand-800 ${
+                l.emphasis ? "font-extrabold text-brand-800" : "font-bold text-slate-800"
+              }`}
+            >
               {l.label}
             </span>
             {l.note && <span className="mt-1 block text-sm text-slate-500">{l.note}</span>}

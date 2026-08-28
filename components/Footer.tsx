@@ -1,96 +1,57 @@
 import Link from "next/link";
 import { BRAND, PHONE_DISPLAY, telLink, waLink } from "@/lib/config";
-import { CITIES, SUBJECTS, allDistricts, publishedRegions } from "@/data/catalog";
 import BrandMark from "./BrandMark";
 import BrandWordmark from "./BrandWordmark";
+import FooterNav from "./FooterNav";
 
+/**
+ * الفوتر — أعمدة الروابط انتقلت إلى FooterNav فوقه،
+ * فبقي هنا التعريف بالبراند وحقوق النشر دون تكرار نفس القوائم مرّتين.
+ */
 export default function Footer() {
   return (
-    <footer className="mt-16 border-t border-slate-200 bg-slate-50">
-      <div className="mx-auto max-w-content px-4 py-12">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <BrandMark className="h-9 w-9" />
-              <BrandWordmark className="h-[22px] text-brand-800" />
+    <footer className="mt-16">
+      <FooterNav />
+
+      <div className="border-t border-slate-200 bg-slate-50">
+        <div className="mx-auto max-w-content px-4 py-10">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+            <div className="max-w-md">
+              <div className="flex items-center gap-2">
+                <BrandMark className="h-9 w-9" />
+                <BrandWordmark className="h-[22px] text-brand-800" />
+              </div>
+              <p className="mt-4 text-sm leading-7 text-slate-600">
+                {BRAND.tagline}
+              </p>
             </div>
-            <p className="mt-4 text-sm leading-7 text-slate-600">{BRAND.tagline}</p>
-            <div className="mt-4 flex flex-col gap-2 text-sm">
-              <a href={waLink()} target="_blank" rel="noopener noreferrer" className="font-semibold text-brand-700 hover:underline">
+
+            <div className="flex flex-col gap-2 text-sm">
+              <a
+                href={waLink()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-brand-700 hover:underline"
+              >
                 واتساب: {PHONE_DISPLAY}
               </a>
               <a href={telLink()} className="text-slate-600 hover:underline">
                 اتصال مباشر
               </a>
+              <Link href="/contact" className="text-slate-600 hover:underline">
+                تواصل معنا
+              </Link>
             </div>
           </div>
 
-          <div>
-            <h3 className="text-sm font-bold text-slate-900">المدن</h3>
-            <ul className="mt-4 space-y-2 text-sm">
-              {CITIES.map((city) => (
-                <li key={city.slug}>
-                  <Link href={`/${city.slug}`} className="text-slate-600 hover:text-brand-700 hover:underline">
-                    معلمون ومعلمات في {city.nameAr}
-                  </Link>
-                </li>
-              ))}
-              {CITIES.flatMap((city) =>
-                publishedRegions(city).map((r) => (
-                  <li key={`${city.slug}-${r.slug}`}>
-                    <Link href={`/${city.slug}/${r.slug}`} className="text-slate-600 hover:text-brand-700 hover:underline">
-                      {r.nameAr}
-                    </Link>
-                  </li>
-                ))
-              )}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-bold text-slate-900">أحياء جدة</h3>
-            <ul className="mt-4 space-y-2 text-sm">
-              {allDistricts(CITIES[0])
-                .filter((d) => d.district.featured)
-                .slice(0, 10)
-                .map(({ district }) => (
-                  <li key={district.slug}>
-                    <Link
-                      href={`/jeddah/${district.slug}`}
-                      className="text-slate-600 hover:text-brand-700 hover:underline"
-                    >
-                      {district.nameArFull}
-                    </Link>
-                  </li>
-                ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-bold text-slate-900">المواد والبرامج</h3>
-            <ul className="mt-4 space-y-2 text-sm">
-              {SUBJECTS.map((s) => (
-                <li key={s.slug}>
-                  <Link href={`/jeddah/${s.slug}`} className="text-slate-600 hover:text-brand-700 hover:underline">
-                    {s.nameAr}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-10 flex flex-col gap-3 border-t border-slate-200 pt-6 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>
+          <p className="mt-8 border-t border-slate-200 pt-6 text-sm text-slate-500">
             © {new Date().getFullYear()}{" "}
             <BrandWordmark className="inline-block h-[13px] translate-y-[2px]" /> —{" "}
             {BRAND.nameEn}. جميع الحقوق محفوظة.
           </p>
-          <Link href="/contact" className="hover:text-brand-700 hover:underline">
-            تواصل معنا
-          </Link>
         </div>
       </div>
+
       {/* مساحة تعويض الشريط الثابت على الجوال */}
       <div className="h-16 md:hidden" />
     </footer>
