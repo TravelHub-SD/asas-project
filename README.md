@@ -51,16 +51,14 @@ Next.js 14 (App Router) · TypeScript · Tailwind CSS · صفحات ثابتة �
 1. `NEXT_PUBLIC_SITE_URL` — الدومين النهائي بعد شرائه، يتجاوز كل ما بعده
 2. `VERCEL_PROJECT_PRODUCTION_URL` — دومين المشروع الإنتاجي على Vercel (ثابت عبر النشرات)
 3. `VERCEL_URL` — رابط النشرة الواحدة (احتياطي)
-4. `https://asas.sa` — احتياطي محلي للتطوير فقط
+4. `https://modarrisah-khususiyah.com` — الدومين الفعلي، احتياطي أخير
 
 بهذا يكون النشر على Vercel قبل شراء الدومين **صحيحًا تلقائيًا**: كل canonical
 يشير إلى دومين المشروع الفعلي لا إلى دومين غير موجود.
 
-بعد شراء الدومين وربطه، اضبط في Vercel:
-
-```
-NEXT_PUBLIC_SITE_URL=https://your-domain.com
-```
+الدومين الفعلي **modarrisah-khususiyah.com** مربوط بـVercel، و`NEXT_PUBLIC_SITE_URL`
+مضبوط هناك. يجب أن تطابق قيمته **الدومين الرئيسي في Vercel حرفيًا** (مع www أو
+بدونها) — أي اختلاف يجعل `canonical` يشير إلى نسخة غير التي تُقدَّم فعلًا.
 
 > ⚠️ **لا ترفع `sitemap.xml` إلى Google Search Console قبل ربط الدومين النهائي.**
 > لو فهرس قوقل نسخة `.vercel.app` ستحتاج لاحقًا إلى تحويلات 301 وتنظيف فهرسة

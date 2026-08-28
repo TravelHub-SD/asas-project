@@ -53,7 +53,10 @@ function resolveSiteUrl(): string {
     process.env.VERCEL_PROJECT_PRODUCTION_URL ?? process.env.VERCEL_URL;
   if (vercelHost) return `https://${vercelHost}`;
 
-  return "https://asas.sa";
+  // الدومين الفعلي — احتياطي أخير لو غاب NEXT_PUBLIC_SITE_URL أو أُخطئ في اسمه.
+  // كان هنا سابقًا دومين مؤقّت لا نملكه، وأي بناء بلا متغيّر بيئة كان
+  // سينتج canonical يشير إلى نطاق غريب فيمنع الفهرسة بدل أن يساعدها.
+  return "https://modarrisah-khususiyah.com";
 }
 
 export const SITE_URL = resolveSiteUrl().replace(/\/+$/, "");
