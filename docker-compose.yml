@@ -1,0 +1,12 @@
+# تشغيل محلي بأمر واحد:  docker compose up --build   →  http://localhost:3000
+services:
+  web:
+    build:
+      context: .
+      args:
+        # الدومين الذي يُخبز في canonical و og:url و sitemap.xml.
+        # محليًا اتركه كما هو، وعند النشر ضع الدومين الفعلي.
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+    ports:
+      - "3000:3000"
+    restart: unless-stopped

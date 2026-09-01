@@ -1,0 +1,19 @@
+# نشر بـDocker على خطة Render المجانية (Blueprint).
+# الاستخدام: Render → New → Blueprint → اختر هذا المستودع.
+# ملاحظة: Render يمرّر متغيّرات البيئة إلى بناء Docker كـbuild args،
+# لذلك يصل NEXT_PUBLIC_SITE_URL إلى ARG في Dockerfile ويُخبز في canonical.
+services:
+  - type: web
+    name: modarrisah-khususiyah
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      # اضبطها في لوحة Render على الدومين الفعلي للخدمة
+      # (مثلاً https://modarrisah-khususiyah.onrender.com أو الدومين المخصّص).
+      - key: NEXT_PUBLIC_SITE_URL
+        sync: false
