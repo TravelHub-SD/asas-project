@@ -13,6 +13,7 @@ import {
   PRIORITY_SUBJECTS,
   SUBJECTS,
   publishedRegions,
+  regionDistricts,
 } from "@/data/catalog";
 import { BRAND } from "@/lib/config";
 import { popularPages, waMessage } from "@/lib/content";
@@ -113,6 +114,40 @@ export default function HomePage() {
               </Link>
             ))}
           </div>
+        </section>
+
+        {/* أحياء جدة — ربط مباشر من الرئيسية إلى أعمق الصفحات */}
+        <section>
+          <SectionTitle>أحياء جدة التي نغطّيها</SectionTitle>
+          <p className="mt-4 max-w-3xl leading-9 text-slate-600">
+            لكل حي صفحة توضّح طبيعة الطلب فيه وأقرب المعلمات إليه. اختر حيّك مباشرة،
+            أو افتح صفحة المنطقة لترى بقية أحيائها.
+          </p>
+          {publishedRegions(CITIES[0]).map((region) => {
+            const featured = regionDistricts(region).filter((d) => d.featured);
+            if (featured.length === 0) return null;
+            return (
+              <div key={region.slug} className="mt-6">
+                <Link
+                  href={`/jeddah/${region.slug}`}
+                  className="text-sm font-bold text-brand-700 hover:underline"
+                >
+                  {region.nameAr} ←
+                </Link>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {featured.map((d) => (
+                    <Link
+                      key={d.slug}
+                      href={`/jeddah/${d.slug}`}
+                      className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:border-brand-300 hover:text-brand-800"
+                    >
+                      {d.nameArFull}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
         </section>
 
         {/* 4) اختر المادة */}

@@ -2,8 +2,8 @@ import Link from "next/link";
 import {
   CITIES,
   SUBJECTS,
-  allDistricts,
   publishedRegions,
+  regionDistricts,
 } from "@/data/catalog";
 import { PHONE_DISPLAY, telLink, waLink } from "@/lib/config";
 import { waMessage } from "@/lib/content";
@@ -17,9 +17,11 @@ import { PhoneIcon, WhatsAppIcon } from "./Icons";
 export default function FooterNav() {
   const jeddah = CITIES[0];
   const regions = publishedRegions(jeddah);
-  const featured = allDistricts(jeddah)
-    .filter((d) => d.district.featured)
-    .slice(0, 8);
+  // كل الأحياء المميّزة، مجمّعة تحت منطقتها.
+  // القصّ عند عدد ثابت كان يُسقط أي حي مميّز جديد من الشريط بصمت.
+  const featuredByRegion = regions
+    .map((r) => ({ region: r, districts: regionDistricts(r).filter((d) => d.featured) }))
+    .filter((g) => g.districts.length > 0);
 
   return (
     <nav
@@ -40,16 +42,18 @@ export default function FooterNav() {
                 </Link>
               </li>
             ))}
-            {featured.map(({ district }) => (
-              <li key={district.slug}>
-                <Link
-                  href={`/${jeddah.slug}/${district.slug}`}
-                  className="text-slate-600 hover:text-brand-700 hover:underline"
-                >
-                  {district.nameArFull}
-                </Link>
-              </li>
-            ))}
+            {featuredByRegion.flatMap(({ districts }) =>
+              districts.map((district) => (
+                <li key={district.slug}>
+                  <Link
+                    href={`/${jeddah.slug}/${district.slug}`}
+                    className="text-slate-600 hover:text-brand-700 hover:underline"
+                  >
+                    {district.nameArFull}
+                  </Link>
+                </li>
+              ))
+            )}
           </ul>
         </div>
 

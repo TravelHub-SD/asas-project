@@ -87,7 +87,7 @@ export default function DistrictPage({
 
       <section className="mx-auto max-w-content px-4 py-10">
         <h1 className="max-w-3xl text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl sm:leading-tight">
-          معلمة خصوصية متميّزة في {placeName}
+          معلمة خصوصية متميّزة في {placeName} ب{city.nameAr}
         </h1>
         <p className="mt-5 max-w-3xl text-lg leading-9 text-slate-600">
           {district.demand[0]}. {district.demand[1] ?? ""} نغطّي {district.nameArFull} ضمن{" "}
@@ -168,7 +168,7 @@ export default function DistrictPage({
 
 export function districtMetadata(city: City, region: Region, district: District) {
   return pageMetadata({
-    title: `معلمة خصوصية في ${district.nameArFull} — ${city.nameAr}`,
+    title: `معلمة خصوصية في ${district.nameArFull} ب${city.nameAr}`,
     description: `معلمون ومعلمات متميّزون في ${district.nameArFull} ضمن ${region.nameAr} لجميع المواد والمراحل — حصص حضورية أو أونلاين، تأسيس للمناهج الانترناشونال وبرامج القدرات والتحصيلي. تواصل عبر واتساب.`,
     path: `/${city.slug}/${district.slug}`,
   });

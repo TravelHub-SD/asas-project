@@ -49,7 +49,7 @@ export default function DistrictSubjectPage({
 }) {
   const path = `/${city.slug}/${district.slug}/${subject.slug}`;
   const placeName = district.nameArFull;
-  const heading = `${subject.h1Prefix} ${placeName}`;
+  const heading = `${subject.h1Prefix} ${placeName} ب${city.nameAr}`;
   const message = waMessage(subject.h1Noun, placeName);
   const note = district.subjectNotes?.[subject.slug as PrioritySubjectSlug];
 
@@ -193,7 +193,7 @@ export function districtSubjectMetadata(
   subject: Subject
 ) {
   return pageMetadata({
-    title: `${subject.h1Prefix} ${district.nameArFull}`,
+    title: `${subject.h1Prefix} ${district.nameArFull} ب${city.nameAr}`,
     description: `${subject.nameAr} في ${district.nameArFull} ضمن ${region.nameAr} — معلمون ومعلمات متميّزون، ${subject.stages}. حصص حضورية أو أونلاين. تواصل عبر واتساب لترشيح المعلمة المناسبة.`,
     path: `/${city.slug}/${district.slug}/${subject.slug}`,
   });
