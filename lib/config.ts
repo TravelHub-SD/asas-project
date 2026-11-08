@@ -53,13 +53,13 @@ function resolveSiteUrl(): string {
     process.env.VERCEL_PROJECT_PRODUCTION_URL ?? process.env.VERCEL_URL;
   if (vercelHost) return `https://${vercelHost}`;
 
-  // الدومين الرسمي **بـ www** — احتياطي أخير لو غاب NEXT_PUBLIC_SITE_URL.
+  // الدومين الرسمي — بلا www، مطابقًا للنطاق الأساسي في Vercel.
   //
-  // ⚠️ يجب أن يبقى مطابقًا للنطاق الأساسي في Vercel. Vercel يحوّل
-  // non-www ← www بـ308، فلو أشار canonical إلى non-www لأعلنت الصفحة
-  // أصلًا غير الذي يصل إليه قوقل فعلًا — وهو ما أرشف النسختين معًا
-  // في Search Console. أي تغيير هنا يجب أن يقابله تغيير النطاق الأساسي.
-  return "https://www.modarrisah-khususiyah.com";
+  // ⚠️ الاتجاه الفعلي: المجرّد هو الأساسي، و www يحوّل إليه بـ308.
+  // فلو أشار canonical إلى www لأعلنت الصفحة أصلًا يحوّل بدوره إلى غيره،
+  // وهو تضارب يُبقي النسختين في الفهرس. أي تغيير هنا يجب أن يقابله
+  // تغيير النطاق الأساسي في Vercel → Settings → Domains، وإلا انفصلا.
+  return "https://modarrisah-khususiyah.com";
 }
 
 export const SITE_URL = resolveSiteUrl().replace(/\/+$/, "");
