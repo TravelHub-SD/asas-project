@@ -14,6 +14,7 @@ import {
   SUBJECTS,
   publishedRegions,
   regionDistricts,
+  citySubjects,
 } from "@/data/catalog";
 import { BRAND } from "@/lib/config";
 import { popularPages, waMessage } from "@/lib/content";
@@ -111,6 +112,32 @@ export default function HomePage() {
                     المناطق: {publishedRegions(city).map((r) => r.nameAr).join(" · ")}
                   </p>
                 )}
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* مدن أخرى — ظاهرة كبطاقات لا داخل قائمة منسدلة */}
+        <section>
+          <SectionTitle>مدن أخرى نخدمها</SectionTitle>
+          <p className="mt-4 max-w-3xl leading-9 text-slate-600">
+            نوفّر في هذه المدن معلمين ومعلمات متميّزين للإنجليزية والتأسيس
+            انترناشونال ورياضيات التحصيلي — حضوريًا حيث يتوفّر المعلم في نطاقكم،
+            أو أونلاين في أي وقت.
+          </p>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {CITIES.filter((c) => c.subjectSlugs).map((city) => (
+              <Link
+                key={city.slug}
+                href={`/${city.slug}`}
+                className="group rounded-xl border border-slate-200 bg-white p-4 transition hover:border-brand-300 hover:bg-brand-50"
+              >
+                <span className="block font-bold text-slate-800 group-hover:text-brand-800">
+                  {city.nameAr}
+                </span>
+                <span className="mt-1 block text-sm text-slate-500">
+                  {citySubjects(city).length} مواد · حضوري أو أونلاين
+                </span>
               </Link>
             ))}
           </div>

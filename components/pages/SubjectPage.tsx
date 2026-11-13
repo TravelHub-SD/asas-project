@@ -6,6 +6,7 @@ import LinkGrid from "@/components/LinkGrid";
 import StickyContactBar from "@/components/StickyContactBar";
 import { CheckList, Paragraphs, SectionTitle } from "@/components/Prose";
 import type { City, Subject } from "@/data/catalog";
+import { isCoreCity, subjectCityAngle, subjectCityFocus } from "@/data/catalog";
 import {
   pageFaqs,
   relatedSubjectLinks,
@@ -22,6 +23,15 @@ import {
   subjectHeading,
   type Crumb,
 } from "@/lib/seo";
+
+/** تدوير ثابت لعناصر مشتركة حسب اسم المدينة. */
+function rotate<T>(items: T[], seed: string, count: number): T[] {
+  const offset =
+    [...seed].reduce((sum, ch) => sum + ch.charCodeAt(0), 0) % items.length;
+  return Array.from({ length: Math.min(count, items.length) }, (_, i) =>
+    items[(offset + i) % items.length]
+  );
+}
 
 /** صفحة مادة داخل مدينة: /jeddah/english — الصفحة التي تستهدف عبارة بحث واحدة. */
 export default function SubjectPage({
@@ -65,7 +75,18 @@ export default function SubjectPage({
         <h1 className="mt-4 max-w-3xl text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl sm:leading-tight">
           {heading}
         </h1>
-        <Paragraphs text={subject.intro} />
+        {/*
+          المدن الموسَّعة تفتتح بنصّها الخاص لا بنصّ المادة العام:
+          النص العام مشترك بين كل المدن، وتصديره كان يجعل صفحة المادة
+          أقرب إلى نظيرتها في مدينة أخرى منها إلى جارتها في مدينتها.
+        */}
+        <Paragraphs
+          text={
+            isCoreCity(city.slug)
+              ? subject.intro
+              : (subjectCityAngle(subject, city) ?? subject.intro)
+          }
+        />
         <ContactButtons message={message} size="lg" className="mt-8" />
       </section>
 
@@ -75,9 +96,16 @@ export default function SubjectPage({
           <h2 className="text-xl font-bold text-slate-900">
             {subject.nameAr} في {placeName}
           </h2>
-          <p className="mt-4 leading-9 text-slate-600">{subject.cityAngle[city.slug]}</p>
+          {!isCoreCity(city.slug) && (
+            <p className="mt-4 leading-9 text-slate-600">{city.intro}</p>
+          )}
+          {isCoreCity(city.slug) && (
+            <p className="mt-4 leading-9 text-slate-600">
+              {subjectCityAngle(subject, city) ?? subject.blurb}
+            </p>
+          )}
           <ul className="mt-5 space-y-3">
-            {subject.cityFocus[city.slug].map((point) => (
+            {subjectCityFocus(subject, city).map((point) => (
               <li key={point} className="flex gap-3">
                 <span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-600" />
                 <span className="leading-8 text-slate-600">{point}</span>
@@ -89,19 +117,35 @@ export default function SubjectPage({
 
         <section>
           <SectionTitle>ماذا تفعل المعلمة في الحصص</SectionTitle>
-          <CheckList items={subject.teacherDoes} />
+          {/*
+            المدن الموسَّعة تعرض مجموعة مدوَّرة حسب اسم المدينة لا القائمة كاملة:
+            عرضها كاملةً كان يجعل صفحة المادة شبه متطابقة بين مدينة وأخرى،
+            وهو نمط صفحات المدخل الذي يعاقبه قوقل.
+          */}
+          <CheckList
+            items={
+              isCoreCity(city.slug)
+                ? subject.teacherDoes
+                : rotate(subject.teacherDoes, city.slug, 3)
+            }
+          />
         </section>
 
+        {isCoreCity(city.slug) && (
         <section>
           <SectionTitle>ما الذي يتغيّر عند الطالب</SectionTitle>
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
-            {subject.outcomes.map((o) => (
+            {(isCoreCity(city.slug)
+              ? subject.outcomes
+              : rotate(subject.outcomes, city.slug + "o", 2)
+            ).map((o) => (
               <div key={o} className="rounded-2xl border border-brand-200 bg-brand-50 p-6">
                 <p className="leading-8 text-brand-900">{o}</p>
               </div>
             ))}
           </div>
         </section>
+        )}
 
         <CtaBox
           title={`احجز حصة ${subject.nameAr} في ${placeName}`}

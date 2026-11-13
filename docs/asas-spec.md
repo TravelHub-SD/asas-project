@@ -1,5 +1,9 @@
 # أساس (Asas) — Private Tutoring Network — Build Spec
 
+> ℹ️ **ملاحظة تحديث:** رقم التواصل في هذا الملف حُدِّث إلى الرقم الحالي `0562797694`.
+> الرقم الذي ورد في البريف الأصلي لم يعد مستخدمًا.
+
+
 > ملاحظة لبابلو: احفظ الملف ده باسم `spec.md` جوه فولدر فاضي، افتح Claude Code فيه،
 > وقول له: **"اقرأ spec.md ونفّذ Phase 1 بالكامل."**
 > اسم البراند ورقم الواتساب متحطوطين كـ config → نغيّرهم في مكان واحد بس.
@@ -22,8 +26,8 @@ export const BRAND = {
   nameAr: "أساس",
   nameEn: "Asas",
   tagline: "معلمون ومعلمات خبرة — تأسيس ومتابعة لجميع المراحل",
-  phone: "0557930608",
-  whatsapp: "966557930608", // wa.me/966557930608
+  phone: "0562797694",
+  whatsapp: "966562797694", // wa.me/966562797694
 };
 ```
 
@@ -95,7 +99,7 @@ Each subject entry MUST include:
 - **JSON-LD schema**: `EducationalOrganization` (or `LocalBusiness`) + `FAQPage`
 - Visible **FAQ** section (3–4 Q&A, varied per page)
 - Prominent **WhatsApp button** — `wa.me` deep link with a **prefilled message** naming the city+subject,
-  e.g. `https://wa.me/966557930608?text=السلام عليكم، أبحث عن معلمة إنجليزي في جدة`
+  e.g. `https://wa.me/966562797694?text=السلام عليكم، أبحث عن معلمة إنجليزي في جدة`
 - `tel:` call link
 - **Internal links**: each page links to sibling subjects in the same city + the same subject in other cities/districts (this link mesh is ranking fuel)
 - Breadcrumbs

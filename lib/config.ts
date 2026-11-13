@@ -6,8 +6,8 @@ export const BRAND = {
   nameAr: "مُدَرِّسة خصوصية",
   nameEn: "Private Tutor",
   tagline: "نخبة من المعلمين والمعلمات المتميّزين — تأسيس ومتابعة لجميع المراحل",
-  phone: "0557930608",
-  whatsapp: "966557930608",
+  phone: "0562797694",
+  whatsapp: "966562797694",
 } as const;
 
 /**
@@ -76,5 +76,9 @@ export function telLink(): string {
   return `tel:+${BRAND.whatsapp}`;
 }
 
-/** الرقم بصيغة عرض مريحة للقراءة. */
-export const PHONE_DISPLAY = "0557930608";
+/**
+ * الرقم بصيغة العرض المحلية.
+ * يُشتقّ من BRAND.phone حتى لا يفترق عنه عند أي تغيير قادم —
+ * كان نصًا مكرّرًا، وهو بالضبط نوع الازدواج الذي يُنسى عند تبديل الرقم.
+ */
+export const PHONE_DISPLAY = BRAND.phone;

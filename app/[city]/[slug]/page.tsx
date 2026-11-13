@@ -5,7 +5,8 @@ import RegionPage, { regionMetadata } from "@/components/pages/RegionPage";
 import DistrictPage, { districtMetadata } from "@/components/pages/DistrictPage";
 import {
   CITIES,
-  SUBJECTS,
+  citySubjects,
+  cityHasSubject,
   findDistrict,
   getCity,
   getRegion,
@@ -24,7 +25,7 @@ interface Params {
  */
 export function generateStaticParams() {
   return CITIES.flatMap((city) => [
-    ...SUBJECTS.map((s) => ({ city: city.slug, slug: s.slug })),
+    ...citySubjects(city).map((s) => ({ city: city.slug, slug: s.slug })),
     ...publishedRegions(city).flatMap((r) => [
       { city: city.slug, slug: r.slug },
       ...r.districts.map((d) => ({ city: city.slug, slug: d.slug })),
@@ -39,7 +40,7 @@ export function generateMetadata({ params }: Params): Metadata {
   if (!city) return {};
 
   const subject = getSubject(params.slug);
-  if (subject) {
+  if (subject && cityHasSubject(city, subject.slug)) {
     return pageMetadata({
       title: subjectPageTitle(subject, city.nameAr),
       description: subjectPageDescription(subject, city.nameAr),
@@ -61,7 +62,9 @@ export default function CitySlugPage({ params }: Params) {
   if (!city) notFound();
 
   const subject = getSubject(params.slug);
-  if (subject) return <SubjectPage city={city} subject={subject} />;
+  if (subject && cityHasSubject(city, subject.slug)) {
+    return <SubjectPage city={city} subject={subject} />;
+  }
 
   const region = getRegion(city, params.slug);
   if (region?.published) return <RegionPage city={city} region={region} />;

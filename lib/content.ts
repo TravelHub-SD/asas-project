@@ -4,6 +4,8 @@ import {
   CITIES,
   SUBJECTS,
   allDistricts,
+  cityHasSubject,
+  citySubjects,
   getSubject,
   publishedRegions,
 } from "@/data/catalog";
@@ -34,24 +36,47 @@ export function pageFaqs(
         q: `هل لديكم معلمة ${subject.h1Noun} تسكن قريبًا من ${district.nameArFull}؟`,
         a: `نرشّح أولًا معلمة من داخل ${district.nameArFull} أو من الأحياء المجاورة له، لأن قرب المسافة يعني مواعيد أثبت وحصصًا لا تتأخر. إن لم تتوفّر معلمة قريبة في وقتك المفضّل نعرض عليك خيار الحصص أونلاين بدل الانتظار.`,
       }
-    : {
-        q: `في أي أحياء ${city.nameAr} تتوفّر حصص ${subject.nameAr}؟`,
-        a: `نغطّي ${publishedRegions(city).map((r) => r.nameAr).join(" و")} بحصص حضورية حسب موقع المعلمة المتاحة، والحصص الأونلاين متاحة في كل الأحياء دون استثناء. أرسل لنا موقعك التقريبي والوقت المناسب لك لنرشّح المتاح.`,
-      };
+    : publishedRegions(city).length > 0
+      ? {
+          q: `في أي أحياء ${city.nameAr} تتوفّر حصص ${subject.nameAr}؟`,
+          a: `نغطّي ${publishedRegions(city)
+            .map((r) => r.nameAr)
+            .join(" و")} بحصص حضورية حسب موقع المعلمة المتاحة، والحصص الأونلاين متاحة في كل الأحياء دون استثناء. أرسل لنا موقعك التقريبي والوقت المناسب لك لنرشّح المتاح.`,
+        }
+      : {
+          // مدينة بلا أحياء منشورة: السؤال عن التغطية نفسها لا عن الأحياء،
+          // وإلا خرجت الإجابة بفراغ مكان أسماء المناطق.
+          q: `هل تغطّون ${subject.nameAr} في ${city.nameAr}؟`,
+          a: `نعم. ${city.localNote} الحصص حضورية حيث يتوفّر معلم في نطاقكم، وأونلاين في كل الأحوال دون انتظار. أرسل لنا الصف الدراسي والوقت المناسب لنخبرك بالمتاح فورًا.`,
+        };
 
   const scheduling: Faq = {
     q: `كيف نبدأ الحصص في ${place}؟`,
-    a: `تواصل معنا عبر واتساب وأخبرنا بالصف الدراسي والمنهج والوقت المناسب، فنرشّح لك معلمة مناسبة خلال وقت قصير، ويُتّفق على جدول ثابت وعدد الحصص الأسبوعية قبل البدء.`,
+    a:
+      city.startNote ??
+      `تواصل معنا عبر واتساب وأخبرنا بالصف الدراسي والمنهج والوقت المناسب، فنرشّح لك معلمة مناسبة خلال وقت قصير، ويُتّفق على جدول ثابت وعدد الحصص الأسبوعية قبل البدء.`,
   };
 
   // تدوير أسئلة المادة حسب المدينة حتى لا يتطابق قسم الأسئلة بين صفحتي نفس المادة
   const offset = CITIES.findIndex((c) => c.slug === city.slug);
   const rotated = subject.faqs
     .slice(offset * 2)
-    .concat(subject.faqs.slice(0, offset * 2))
-    .slice(0, 2);
+    .concat(subject.faqs.slice(0, offset * 2));
 
-  return [local, ...rotated, scheduling];
+  // المدن الموسَّعة: سؤالان عن المدينة نفسها وسؤال واحد عن المادة.
+  // أسئلة المادة مشتركة بين كل المدن، فترجيحها هنا كان يجعل صفحة المادة
+  // أقرب إلى نظيرتها في مدينة أخرى منها إلى جارتها في المدينة نفسها.
+  if (!district && publishedRegions(city).length === 0) {
+    const cityMode: Faq = {
+      q: `هل الحصص في ${city.nameAr} حضورية أم أونلاين؟`,
+      a:
+        city.modeNote ??
+        `الاثنان. الحصص الحضورية متاحة حيث يتوفّر معلم في نطاقكم داخل ${city.nameAr}، والأونلاين متاحة دائمًا ودون انتظار.`,
+    };
+    return [local, cityMode, rotated[0], scheduling];
+  }
+
+  return [local, ...rotated.slice(0, 2), scheduling];
 }
 
 export interface LinkItem {
@@ -67,12 +92,14 @@ export function siblingSubjectLinks(
   city: City,
   currentSlug: string
 ): LinkItem[] {
-  return SUBJECTS.filter((s) => s.slug !== currentSlug).map((s) => ({
+  return citySubjects(city)
+    .filter((s) => s.slug !== currentSlug)
+    .map((s) => ({
     href: `/${city.slug}/${s.slug}`,
     label: `${s.h1Prefix} ${city.nameAr}`,
-    note: s.blurb,
-    emphasis: Boolean(s.priority),
-  }));
+      note: s.blurb,
+      emphasis: Boolean(s.priority),
+    }));
 }
 
 /** نفس المادة في المدن الأخرى. */
@@ -80,7 +107,9 @@ export function sameSubjectOtherCities(
   subject: Subject,
   currentCity: string
 ): LinkItem[] {
-  return CITIES.filter((c) => c.slug !== currentCity).map((c) => ({
+  return CITIES.filter(
+    (c) => c.slug !== currentCity && cityHasSubject(c, subject.slug)
+  ).map((c) => ({
     href: `/${c.slug}/${subject.slug}`,
     label: `${subject.h1Prefix} ${c.nameAr}`,
   }));
@@ -133,6 +162,7 @@ export function relatedSubjectLinks(
   city: City
 ): LinkItem[] {
   return subject.related
+    .filter((slug) => cityHasSubject(city, slug))
     .map((slug) => getSubject(slug))
     .filter((s): s is Subject => Boolean(s))
     .map((s) => ({

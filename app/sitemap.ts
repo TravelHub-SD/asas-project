@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import {
   CITIES,
   PRIORITY_SUBJECT_SLUGS,
-  SUBJECTS,
+  citySubjects,
   allDistricts,
   publishedRegions,
 } from "@/data/catalog";
@@ -55,7 +55,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       }
     }
 
-    for (const subject of SUBJECTS) {
+    // مواد هذه المدينة فقط — SUBJECTS كاملةً كانت تُدرج روابط
+    // لمواد لا تعرضها المدن الجديدة، أي روابط تنتهي بـ404 في الخريطة.
+    for (const subject of citySubjects(city)) {
       entries.push({
         url: url(`/${city.slug}/${subject.slug}`),
         lastModified: now,

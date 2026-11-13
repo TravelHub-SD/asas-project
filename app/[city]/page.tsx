@@ -15,8 +15,11 @@ import {
   PRIORITY_SUBJECTS,
   REGULAR_SUBJECTS,
   SUBJECTS,
+  isCoreCity,
   getCity,
   publishedRegions,
+  subjectCityAngle,
+  citySubjects,
   regionDistricts,
 } from "@/data/catalog";
 import { waMessage } from "@/lib/content";
@@ -61,25 +64,46 @@ export default function CityPage({ params }: Params) {
     { name: city.nameAr, path: `/${city.slug}` },
   ];
 
+  // سؤال الانترناشونال كان مكتوبًا بشرط من زمن المدينتين: أي مدينة غير جدة
+  // كانت تحصل على نصّ الرياض حرفيًا، فظهرت «لدينا في الرياض» في صفحة مكة
+  // وجازان وأبها. تُبنى الأسئلة الآن من نصوص المدينة نفسها.
+  const cityAngleFor = (slug: string) => {
+    const subject = SUBJECTS.find((x) => x.slug === slug);
+    return subject ? subjectCityAngle(subject, city) : undefined;
+  };
+
   const faqs = [
     {
       q: `كيف أختار المعلمة المناسبة في ${city.nameAr}؟`,
-      a: `أخبرنا عبر واتساب بالصف الدراسي والمادة والمنهج والحي والوقت المفضّل، فنرشّح لك معلمة متميّزة تطابق هذه التفاصيل، وإن لم تكن مناسبة نرشّح غيرها.`,
+      a:
+        city.startNote ??
+        `أخبرنا عبر واتساب بالصف الدراسي والمادة والمنهج والحي والوقت المفضّل، فنرشّح لك معلمة متميّزة تطابق هذه التفاصيل، وإن لم تكن مناسبة نرشّح غيرها.`,
     },
     {
       q: `هل الحصص في ${city.nameAr} حضورية أم أونلاين؟`,
-      a: `الاثنان متاحان. الحصص الحضورية تعتمد على قرب المعلمة من حيّكم، والحصص الأونلاين متاحة في كل أحياء ${city.nameAr} وتناسب المواد الحسابية وبرامج القدرات و STEP.`,
+      a:
+        city.modeNote ??
+        `الاثنان متاحان. الحصص الحضورية تعتمد على قرب المعلمة من حيّكم، والحصص الأونلاين متاحة في كل أحياء ${city.nameAr} وتناسب المواد الحسابية وبرامج القدرات و STEP.`,
     },
     {
       q: `هل لديكم معلمات للمناهج الانترناشونال في ${city.nameAr}؟`,
-      a: city.slug === "jeddah"
-        ? "نعم، وهو أقوى تخصّصاتنا في جدة نظرًا لتركّز المدارس الانترناشونال شمال المدينة. المعلمة تعمل من كتاب مدرسة الطالب ومنصّتها مباشرة."
-        : "نعم، لدينا في الرياض معلمات للمنهجين البريطاني والأمريكي، ونستقبل كثيرًا من الأسر العائدة من الخارج التي يحتاج أبناؤها فترة تأسيس بعد تغيير النظام التعليمي.",
+      a:
+        cityAngleFor("international") ??
+        (city.slug === "jeddah"
+          ? "نعم، وهو أقوى تخصّصاتنا في جدة نظرًا لتركّز المدارس الانترناشونال شمال المدينة. المعلمة تعمل من كتاب مدرسة الطالب ومنصّتها مباشرة."
+          : "نعم، لدينا في الرياض معلمات للمنهجين البريطاني والأمريكي، ونستقبل كثيرًا من الأسر العائدة من الخارج التي يحتاج أبناؤها فترة تأسيس بعد تغيير النظام التعليمي."),
     },
-    {
-      q: `متى تبدأ الحصص بعد التواصل؟`,
-      a: `في الغالب خلال أيام قليلة، وأحيانًا في نفس الأسبوع إن كان الوقت المطلوب متاحًا لدى إحدى المعلمات. الأوقات المسائية هي الأكثر طلبًا، لذلك يفضّل الحجز مبكرًا في بداية الفصل الدراسي.`,
-    },
+    isCoreCity(city.slug)
+      ? {
+          q: `متى تبدأ الحصص بعد التواصل؟`,
+          a: `في الغالب خلال أيام قليلة، وأحيانًا في نفس الأسبوع إن كان الوقت المطلوب متاحًا لدى إحدى المعلمات. الأوقات المسائية هي الأكثر طلبًا، لذلك يفضّل الحجز مبكرًا في بداية الفصل الدراسي.`,
+        }
+      : {
+          q: `ما أكثر ما يُطلب من دروس التحصيلي في ${city.nameAr}؟`,
+          a:
+            cityAngleFor("math-tahsili") ??
+            `القسم الرياضي، وهو أثقل أقسام التحصيلي وزنًا. أرسل لنا موعد اختبارك لنبني الخطة على ما تبقّى من أسابيع.`,
+        },
   ];
 
   return (
@@ -110,7 +134,7 @@ export default function CityPage({ params }: Params) {
         <section>
           <SectionTitle>برامج مميّزة في {city.nameAr}</SectionTitle>
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            {PRIORITY_SUBJECTS.map((s) => (
+            {citySubjects(city).filter((s) => s.priority).map((s) => (
               <Link
                 key={s.slug}
                 href={`/${city.slug}/${s.slug}`}
@@ -119,7 +143,7 @@ export default function CityPage({ params }: Params) {
                 <h3 className="text-xl font-bold text-slate-900 group-hover:text-brand-800">
                   {s.h1Prefix} {city.nameAr}
                 </h3>
-                <p className="mt-3 leading-8 text-slate-600">{s.cityAngle[city.slug]}</p>
+                <p className="mt-3 leading-8 text-slate-600">{subjectCityAngle(s, city) ?? s.blurb}</p>
               </Link>
             ))}
           </div>
@@ -129,7 +153,7 @@ export default function CityPage({ params }: Params) {
         <LinkGrid
           title={`المواد الدراسية في ${city.nameAr}`}
           description={`لكل مادة صفحة مستقلة توضّح طريقة العمل والمراحل التي تُغطّى في ${city.nameAr}.`}
-          links={REGULAR_SUBJECTS.map((s) => ({
+          links={citySubjects(city).filter((s) => !s.priority).map((s) => ({
             href: `/${city.slug}/${s.slug}`,
             label: `${s.h1Prefix} ${city.nameAr}`,
             note: s.blurb,
@@ -165,7 +189,10 @@ export default function CityPage({ params }: Params) {
           </section>
         )}
 
-        {/* كيف تتم الحصص */}
+        {/* كيف تتم الحصص — للمدن الأساسية فقط: في المدن الموسَّعة
+            يجيب سؤال «حضورية أم أونلاين؟» بنصّ خاص بالمدينة، وتكرار
+            الشرح العام هنا كان يضيف ١٧٠ كلمة متطابقة إلى كل صفحة مدينة. */}
+        {isCoreCity(city.slug) && (
         <section>
           <SectionTitle>كيف تتم الحصص في {city.nameAr}</SectionTitle>
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
@@ -177,6 +204,7 @@ export default function CityPage({ params }: Params) {
             ))}
           </div>
         </section>
+        )}
 
         {/* المناهج */}
         <section>

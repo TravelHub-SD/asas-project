@@ -90,7 +90,7 @@ export default function FooterNav() {
                 </Link>
               </li>
             ))}
-            {CITIES.map((c) => (
+            {CITIES.filter((c) => !c.subjectSlugs).map((c) => (
               <li key={`${c.slug}-int`}>
                 <Link
                   href={`/${c.slug}/international`}
