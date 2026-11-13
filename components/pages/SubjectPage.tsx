@@ -88,6 +88,11 @@ export default function SubjectPage({
           }
         />
         <ContactButtons message={message} size="lg" className="mt-8" />
+        {city.whatsappNote && (
+          <p className="mt-4 max-w-2xl rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 leading-8 text-emerald-900">
+            {city.whatsappNote}
+          </p>
+        )}
       </section>
 
       <div className="mx-auto max-w-content space-y-16 px-4 pb-16">
