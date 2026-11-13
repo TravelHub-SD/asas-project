@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { PHONE_DISPLAY, telLink } from "@/lib/config";
-import { CITIES } from "@/data/catalog";
+import { CITIES, isCoreCity } from "@/data/catalog";
 import { PhoneIcon } from "./Icons";
 import BrandMark from "./BrandMark";
 import BrandWordmark from "./BrandWordmark";
@@ -9,6 +9,11 @@ import BrandWordmark from "./BrandWordmark";
  * الهيدر — أزرار المدن ظاهرة مباشرة لا داخل قائمة منسدلة.
  * القائمة المنسدلة كانت تُفوَّت لأن ولي الأمر لا ينتبه للسهم الصغير،
  * فصار الخياران أمامه من أول نظرة.
+ *
+ * هنا جدة والرياض فقط. المرور على CITIES كان يصلح حين كانت مدينتين،
+ * ثم صارت تسعًا فبلغ صف الهيدر ٨٢٤px وتجاوز شاشة الموبايل، فظهرت كل
+ * صفحة بتمرير أفقي واللوجو خارج الشاشة. بقية المدن لها قسم في الصفحة
+ * الرئيسية وعمود في الفوتر، وهو موضعها الصحيح.
  */
 export default function Header() {
   return (
@@ -24,12 +29,12 @@ export default function Header() {
           </span>
         </Link>
 
-        <nav className="flex items-center gap-1.5 text-sm sm:gap-2">
+        <nav className="flex min-w-0 flex-wrap items-center justify-end gap-1.5 text-sm sm:gap-2">
           <span className="hidden text-xs font-semibold text-slate-400 lg:inline">
             اختر مدينتك:
           </span>
 
-          {CITIES.map((city) => (
+          {CITIES.filter((city) => isCoreCity(city.slug)).map((city) => (
             <Link
               key={city.slug}
               href={`/${city.slug}`}
